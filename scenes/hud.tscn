@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud_script"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud_script")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 400.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="OreIcon" type="ColorRect" parent="TopBar"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+color = Color(0.55, 0.35, 0.17, 1)
+
+[node name="OreLabel" type="Label" parent="TopBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 20
+text = "0"
+
+[node name="Spacer" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="XPLabel" type="Label" parent="TopBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 20
+text = "XP: 0"

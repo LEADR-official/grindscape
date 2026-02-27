@@ -7,7 +7,7 @@ signal stats_updated
 
 # --- Raw metrics ---
 var ore_count: int = 0
-var xp: int = 0
+var xp: float = 0
 var skeleton_kills: int = 0
 var damage_taken: int = 0
 var damage_dealt: int = 0
@@ -19,7 +19,7 @@ var distance_traveled: float = 0.0
 
 func get_damage_ratio() -> float:
 	if damage_taken == 0:
-		return damage_dealt
+		return float(damage_dealt)
 	return float(damage_dealt) / float(damage_taken)
 
 
@@ -55,7 +55,7 @@ func add_ore(amount: int = 1) -> void:
 	stats_updated.emit()
 
 
-func add_xp(amount: int) -> void:
+func add_xp(amount: float) -> void:
 	xp += amount
 	stats_updated.emit()
 
