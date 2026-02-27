@@ -1,3 +1,38 @@
-[gd_scene load_steps=0 format=3 uid="uid://c0game00001"]
+[gd_scene load_steps=6 format=3 uid="uid://c0game00001"]
+
+[ext_resource type="PackedScene" uid="uid://dplayer00001" path="res://scenes/player.tscn" id="1_player"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(1280, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(1280, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(10, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(10, 720)
 
 [node name="Game" type="Node2D"]
+
+[node name="Boundary" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(640, -5)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(640, 725)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(-5, 360)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(1285, 360)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(640, 360)

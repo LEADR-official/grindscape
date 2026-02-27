@@ -12,20 +12,39 @@ var skeleton_kills: int = 0
 var damage_taken: int = 0
 var damage_dealt: int = 0
 var survival_time_seconds: float = 0.0
+var distance_traveled: float = 0.0
 
 # --- Derived stats ---
 
 
-func get_kill_death_ratio() -> float:
+func get_damage_ratio() -> float:
 	if damage_taken == 0:
-		return 0.0
-	return float(skeleton_kills) / float(damage_taken)
+		return damage_dealt
+	return float(damage_dealt) / float(damage_taken)
 
 
 func get_dps() -> float:
 	if survival_time_seconds <= 0.0:
 		return 0.0
 	return float(damage_dealt) / survival_time_seconds
+
+
+func get_kills_per_minute() -> float:
+	if survival_time_seconds <= 0.0:
+		return 0.0
+	return (float(skeleton_kills) / survival_time_seconds) * 60.0
+
+
+func get_xp_per_second() -> float:
+	if survival_time_seconds <= 0.0:
+		return 0.0
+	return float(xp) / survival_time_seconds
+
+
+func get_ore_per_minute() -> float:
+	if survival_time_seconds <= 0.0:
+		return 0.0
+	return (float(ore_count) / survival_time_seconds) * 60.0
 
 
 # --- Mutation methods ---
@@ -61,6 +80,11 @@ func add_survival_time(delta: float) -> void:
 	stats_updated.emit()
 
 
+func add_distance_traveled(amount: float) -> void:
+	distance_traveled += amount
+	stats_updated.emit()
+
+
 # --- Reset for Play Again flow ---
 
 
@@ -71,4 +95,5 @@ func reset() -> void:
 	damage_taken = 0
 	damage_dealt = 0
 	survival_time_seconds = 0.0
+	distance_traveled = 0.0
 	stats_updated.emit()
