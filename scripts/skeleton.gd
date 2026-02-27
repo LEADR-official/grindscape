@@ -1,18 +1,49 @@
 extends CharacterBody2D
-## Skeleton enemy — chases the player at a slow fixed speed, stops when in attack range.
+## Skeleton enemy — chases player, can be attacked via click interaction.
+## 3 hits to kill, respawns at random location after death.
+
+signal skeleton_hit
+signal skeleton_killed
 
 const CHASE_SPEED: float = 70.0
 const ATTACK_RANGE: float = 48.0
+const HITS_TO_KILL: int = 3
+const MIN_RESPAWN_TIME: float = 3.0
+const MAX_RESPAWN_TIME: float = 8.0
+const ARENA_MARGIN: float = 60.0
+const ARENA_WIDTH: float = 1280.0
+const ARENA_HEIGHT: float = 720.0
+const HEALTH_BAR_WIDTH: float = 32.0
+const HEALTH_COLOR_FULL := Color(0.2, 0.8, 0.2, 1)
+const HEALTH_COLOR_EMPTY := Color(0.8, 0.15, 0.15, 1)
 
+var _hits_remaining: int = HITS_TO_KILL
+var _pending_attack: bool = false
+var _attack_cooldown: bool = false
+var _dead: bool = false
+var _in_combat: bool = false
 var _player: CharacterBody2D
+
+@onready var _hit_area: Area2D = $HitArea
+@onready var _color_rect: ColorRect = $ColorRect
+@onready var _attack_cooldown_timer: Timer = $AttackCooldownTimer
+@onready var _respawn_timer: Timer = $RespawnTimer
+@onready var _health_bar: Control = $HealthBar
+@onready var _health_fill: ColorRect = $HealthBar/Fill
 
 
 func _ready() -> void:
 	_player = get_tree().get_first_node_in_group("player") as CharacterBody2D
+	_hit_area.input_event.connect(_on_hit_area_input_event)
+	_hit_area.body_entered.connect(_on_body_entered)
+	_attack_cooldown_timer.timeout.connect(_on_attack_cooldown_finished)
+	_respawn_timer.timeout.connect(_respawn)
+	_health_bar.visible = false
+	_update_health_bar()
 
 
 func _physics_process(_delta: float) -> void:
-	if _player == null:
+	if _dead or _player == null:
 		return
 	var distance := global_position.distance_to(_player.global_position)
 	if distance > ATTACK_RANGE:
@@ -20,3 +51,71 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 	else:
 		velocity = Vector2.ZERO
+
+
+func _on_hit_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if _attack_cooldown or _dead:
+		return
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
+			_pending_attack = true
+			for body in _hit_area.get_overlapping_bodies():
+				if body.is_in_group("player"):
+					_attack()
+					return
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if _pending_attack and not _dead and body.is_in_group("player"):
+		_attack()
+
+
+func _attack() -> void:
+	_pending_attack = false
+	_attack_cooldown = true
+	_in_combat = true
+	_health_bar.visible = true
+	_attack_cooldown_timer.start()
+	_hits_remaining -= 1
+	_update_health_bar()
+	skeleton_hit.emit()
+	if _hits_remaining <= 0:
+		skeleton_killed.emit()
+		_die()
+
+
+func _on_attack_cooldown_finished() -> void:
+	_attack_cooldown = false
+	_in_combat = false
+	_health_bar.visible = false
+
+
+func _die() -> void:
+	_dead = true
+	_pending_attack = false
+	_attack_cooldown = false
+	_in_combat = false
+	_health_bar.visible = false
+	visible = false
+	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+	var wait := randf_range(MIN_RESPAWN_TIME, MAX_RESPAWN_TIME)
+	_respawn_timer.wait_time = wait
+	_respawn_timer.start()
+
+
+func _respawn() -> void:
+	var new_x := randf_range(ARENA_MARGIN, ARENA_WIDTH - ARENA_MARGIN)
+	var new_y := randf_range(ARENA_MARGIN, ARENA_HEIGHT - ARENA_MARGIN)
+	global_position = Vector2(new_x, new_y)
+	_dead = false
+	_hits_remaining = HITS_TO_KILL
+	_update_health_bar()
+	visible = true
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+
+
+func _update_health_bar() -> void:
+	var ratio := float(_hits_remaining) / float(HITS_TO_KILL)
+	_health_fill.size.x = HEALTH_BAR_WIDTH * ratio
+	_health_fill.color = HEALTH_COLOR_EMPTY.lerp(HEALTH_COLOR_FULL, ratio)

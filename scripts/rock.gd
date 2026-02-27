@@ -86,7 +86,7 @@ func _despawn() -> void:
 	_pending_mine = false
 	rock_crumbled.emit()
 	visible = false
-	process_mode = Node.PROCESS_MODE_DISABLED
+	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	var wait := randf_range(MIN_RESPAWN_TIME, MAX_RESPAWN_TIME)
 	_respawn_timer.wait_time = wait
 	_respawn_timer.start()
@@ -100,7 +100,7 @@ func _respawn() -> void:
 	_despawned = false
 	_color_rect.color = ROCK_COLOR
 	visible = true
-	process_mode = Node.PROCESS_MODE_INHERIT
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	_roll_mines_until_despawn()
 	print("Rock respawned at ", global_position, " (%d mines until despawn)" % _mines_until_despawn)
 
