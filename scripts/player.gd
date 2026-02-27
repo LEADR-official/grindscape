@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const MOVE_SPEED: float = 200.0
 const ARRIVAL_THRESHOLD: float = 2.0
+const PIXELS_PER_METER: float = 32.0
 
 var _target_position: Vector2
 
@@ -28,6 +29,6 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 		var moved := position.distance_to(pos_before)
 		if moved > 0.0:
-			Stats.add_distance_traveled(moved)
+			Stats.add_distance_traveled(moved / PIXELS_PER_METER)
 	else:
 		velocity = Vector2.ZERO
