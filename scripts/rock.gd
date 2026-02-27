@@ -1,33 +1,46 @@
 extends StaticBody2D
 ## Minable rock — click to mine when in range, 2s cooldown between mines.
+## After a random number of mines (1–13), despawns and respawns elsewhere.
 
 signal ore_mined
+signal rock_crumbled
 
 const ROCK_COLOR := Color(0.55, 0.35, 0.17, 1)
 const COOLDOWN_COLOR := Color(0.3, 0.3, 0.3, 1)
+const MIN_MINES_BEFORE_DESPAWN: int = 1
+const MAX_MINES_BEFORE_DESPAWN: int = 13
+const MIN_RESPAWN_TIME: float = 1.0
+const MAX_RESPAWN_TIME: float = 10.0
+const ARENA_MARGIN: float = 60.0
+const ARENA_WIDTH: float = 1280.0
+const ARENA_HEIGHT: float = 720.0
 
 var _pending_mine: bool = false
 var _on_cooldown: bool = false
+var _despawned: bool = false
+var _mines_until_despawn: int = 0
 
 @onready var _interaction_area: Area2D = $InteractionArea
 @onready var _color_rect: ColorRect = $ColorRect
 @onready var _cooldown_timer: Timer = $CooldownTimer
+@onready var _respawn_timer: Timer = $RespawnTimer
 
 
 func _ready() -> void:
 	_interaction_area.input_event.connect(_on_interaction_input_event)
 	_interaction_area.body_entered.connect(_on_body_entered)
 	_cooldown_timer.timeout.connect(_on_cooldown_finished)
+	_respawn_timer.timeout.connect(_respawn)
+	_roll_mines_until_despawn()
 
 
 func _on_interaction_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if _on_cooldown:
+	if _on_cooldown or _despawned:
 		return
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
 			_pending_mine = true
-			print("Rock clicked, pending mine")
 			for body in _interaction_area.get_overlapping_bodies():
 				if body.is_in_group("player"):
 					_mine()
@@ -35,19 +48,51 @@ func _on_interaction_input_event(_viewport: Node, event: InputEvent, _shape_idx:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if _pending_mine and body.is_in_group("player"):
+	if _pending_mine and not _despawned and body.is_in_group("player"):
 		_mine()
 
 
 func _mine() -> void:
 	_pending_mine = false
-	_on_cooldown = true
-	_color_rect.color = COOLDOWN_COLOR
-	_cooldown_timer.start()
 	ore_mined.emit()
-	print("Ore mined! Stats.ore_count = ", Stats.ore_count)
+	_mines_until_despawn -= 1
+	if _mines_until_despawn <= 0:
+		_despawn()
+	else:
+		_on_cooldown = true
+		_color_rect.color = COOLDOWN_COLOR
+		_cooldown_timer.start()
 
 
 func _on_cooldown_finished() -> void:
 	_on_cooldown = false
 	_color_rect.color = ROCK_COLOR
+
+
+func _despawn() -> void:
+	_despawned = true
+	_on_cooldown = false
+	_pending_mine = false
+	rock_crumbled.emit()
+	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED
+	var wait := randf_range(MIN_RESPAWN_TIME, MAX_RESPAWN_TIME)
+	_respawn_timer.wait_time = wait
+	_respawn_timer.start()
+	print("Rock crumbled! Respawning in %.1fs" % wait)
+
+
+func _respawn() -> void:
+	var new_x := randf_range(ARENA_MARGIN, ARENA_WIDTH - ARENA_MARGIN)
+	var new_y := randf_range(ARENA_MARGIN, ARENA_HEIGHT - ARENA_MARGIN)
+	global_position = Vector2(new_x, new_y)
+	_despawned = false
+	_color_rect.color = ROCK_COLOR
+	visible = true
+	process_mode = Node.PROCESS_MODE_INHERIT
+	_roll_mines_until_despawn()
+	print("Rock respawned at ", global_position, " (%d mines until despawn)" % _mines_until_despawn)
+
+
+func _roll_mines_until_despawn() -> void:
+	_mines_until_despawn = randi_range(MIN_MINES_BEFORE_DESPAWN, MAX_MINES_BEFORE_DESPAWN)
