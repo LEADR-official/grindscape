@@ -4,9 +4,11 @@ extends CharacterBody2D
 
 signal skeleton_hit
 signal skeleton_killed
+signal skeleton_attacked_player
 
 const CHASE_SPEED: float = 70.0
 const ATTACK_RANGE: float = 48.0
+const DAMAGE_COOLDOWN: float = 1.5
 const HITS_TO_KILL: int = 3
 const MIN_RESPAWN_TIME: float = 3.0
 const MAX_RESPAWN_TIME: float = 8.0
@@ -22,12 +24,14 @@ var _pending_attack: bool = false
 var _attack_cooldown: bool = false
 var _dead: bool = false
 var _in_combat: bool = false
+var _damage_ready: bool = true
 var _player: CharacterBody2D
 
 @onready var _hit_area: Area2D = $HitArea
 @onready var _color_rect: ColorRect = $ColorRect
 @onready var _attack_cooldown_timer: Timer = $AttackCooldownTimer
 @onready var _respawn_timer: Timer = $RespawnTimer
+@onready var _damage_cooldown_timer: Timer = $DamageCooldownTimer
 @onready var _health_bar: Control = $HealthBar
 @onready var _health_fill: ColorRect = $HealthBar/Fill
 
@@ -38,6 +42,7 @@ func _ready() -> void:
 	_hit_area.body_entered.connect(_on_body_entered)
 	_attack_cooldown_timer.timeout.connect(_on_attack_cooldown_finished)
 	_respawn_timer.timeout.connect(_respawn)
+	_damage_cooldown_timer.timeout.connect(_on_damage_cooldown_finished)
 	_health_bar.visible = false
 	_update_health_bar()
 
@@ -51,6 +56,10 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 	else:
 		velocity = Vector2.ZERO
+		if _damage_ready:
+			_damage_ready = false
+			_damage_cooldown_timer.start()
+			skeleton_attacked_player.emit()
 
 
 func _on_hit_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -91,6 +100,10 @@ func _on_attack_cooldown_finished() -> void:
 	_health_bar.visible = false
 
 
+func _on_damage_cooldown_finished() -> void:
+	_damage_ready = true
+
+
 func _die() -> void:
 	_dead = true
 	_pending_attack = false
@@ -109,6 +122,7 @@ func _respawn() -> void:
 	var new_y := randf_range(ARENA_MARGIN, ARENA_HEIGHT - ARENA_MARGIN)
 	global_position = Vector2(new_x, new_y)
 	_dead = false
+	_damage_ready = true
 	_hits_remaining = HITS_TO_KILL
 	_update_health_bar()
 	visible = true

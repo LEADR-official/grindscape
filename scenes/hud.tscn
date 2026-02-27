@@ -35,3 +35,15 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_font_sizes/font_size = 20
 text = "XP: 0"
+
+[node name="Spacer2" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HealthLabel" type="Label" parent="TopBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+text = "HP: 10/10"

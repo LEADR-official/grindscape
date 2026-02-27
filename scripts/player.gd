@@ -1,15 +1,22 @@
 extends CharacterBody2D
 ## Player controller — click anywhere to move toward that point.
+## Has a health pool; emits player_died at zero.
+
+signal player_died
+signal health_changed(current: int, maximum: int)
 
 const MOVE_SPEED: float = 200.0
 const ARRIVAL_THRESHOLD: float = 2.0
 const PIXELS_PER_METER: float = 32.0
+const MAX_HEALTH: int = 10
 
+var health: int = MAX_HEALTH
 var _target_position: Vector2
 
 
 func _ready() -> void:
 	_target_position = position
+	health_changed.emit(health, MAX_HEALTH)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -18,6 +25,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
 			_target_position = mb.position
 			print("Click at ", mb.position, " → moving from ", position)
+
+
+func take_damage(amount: int) -> void:
+	health = max(health - amount, 0)
+	health_changed.emit(health, MAX_HEALTH)
+	if health <= 0:
+		player_died.emit()
 
 
 func stop() -> void:

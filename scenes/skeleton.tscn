@@ -51,6 +51,10 @@ color = Color(0.2, 0.8, 0.2, 1)
 wait_time = 0.5
 one_shot = true
 
+[node name="DamageCooldownTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
 [node name="RespawnTimer" type="Timer" parent="."]
 one_shot = true
 process_mode = 3
