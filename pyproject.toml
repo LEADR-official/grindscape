@@ -1,0 +1,10 @@
+[project]
+name = "grindscape"
+version = "0.1.0"
+description = "Make numbers get bigger in this massively-singleplayer online clicker"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gdtoolkit>=4.5.0",
+    "pre-commit>=4.5.1",
+]
