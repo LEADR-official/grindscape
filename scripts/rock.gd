@@ -57,7 +57,7 @@ func _mine() -> void:
 	ore_mined.emit()
 	_mines_until_despawn -= 1
 	if _mines_until_despawn <= 0:
-		_despawn()
+		_begin_crumble()
 	else:
 		_on_cooldown = true
 		_color_rect.color = COOLDOWN_COLOR
@@ -67,6 +67,17 @@ func _mine() -> void:
 func _on_cooldown_finished() -> void:
 	_on_cooldown = false
 	_color_rect.color = ROCK_COLOR
+
+
+func _begin_crumble() -> void:
+	_on_cooldown = true
+	_pending_mine = false
+	var tween := create_tween()
+	for i in range(4):
+		tween.tween_property(_color_rect, "position:x", 4.0, 0.075)
+		tween.tween_property(_color_rect, "position:x", -4.0, 0.075)
+	tween.tween_property(_color_rect, "position:x", 0.0, 0.075)
+	tween.tween_callback(_despawn)
 
 
 func _despawn() -> void:

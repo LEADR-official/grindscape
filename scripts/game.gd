@@ -4,6 +4,7 @@ extends Node2D
 const ORE_XP_VALUE: float = 3.25
 
 @onready var _rock: StaticBody2D = $Rock
+@onready var _player: CharacterBody2D = $Player
 
 
 func _ready() -> void:
@@ -13,3 +14,4 @@ func _ready() -> void:
 func _on_ore_mined() -> void:
 	Stats.add_ore()
 	Stats.add_xp(ORE_XP_VALUE)
+	_player.stop()

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 ## Skeleton enemy — chases the player at a slow fixed speed, stops when in attack range.
 
-const CHASE_SPEED: float = 80.0
+const CHASE_SPEED: float = 70.0
 const ATTACK_RANGE: float = 48.0
 
 var _player: CharacterBody2D

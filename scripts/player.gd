@@ -20,6 +20,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			print("Click at ", mb.position, " → moving from ", position)
 
 
+func stop() -> void:
+	_target_position = position
+	velocity = Vector2.ZERO
+
+
 func _physics_process(_delta: float) -> void:
 	var distance := position.distance_to(_target_position)
 	if distance > ARRIVAL_THRESHOLD:
