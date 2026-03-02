@@ -10,6 +10,7 @@ const DAMAGE_TAKEN_XP: float = 1.0
 @onready var _rock: StaticBody2D = $Rock
 @onready var _player: CharacterBody2D = $Player
 @onready var _skeleton: CharacterBody2D = $Skeleton
+@onready var _game_over_screen: CanvasLayer = $GameOverScreen
 
 
 func _ready() -> void:
@@ -43,5 +44,10 @@ func _on_skeleton_attacked_player() -> void:
 	Stats.add_xp(DAMAGE_TAKEN_XP)
 
 
+func _process(delta: float) -> void:
+	Stats.add_survival_time(delta)
+
+
 func _on_player_died() -> void:
 	get_tree().paused = true
+	_game_over_screen.show_game_over()

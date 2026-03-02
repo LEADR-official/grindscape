@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://d3wxlp4b8fyjn"]
+[gd_scene load_steps=11 format=3 uid="uid://d3wxlp4b8fyjn"]
 
 [ext_resource type="PackedScene" uid="uid://dpt1j22nxfw0x" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/rock.tscn" id="2_rock"]
-[ext_resource type="Script" uid="uid://b1578tt5yug3l" path="res://scripts/game.gd" id="3_game_script"]
+[ext_resource type="Script" uid="uid://jeki4rqohakj" path="res://scripts/game.gd" id="3_game_script"]
 [ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" path="res://scenes/skeleton.tscn" id="5_skeleton"]
+[ext_resource type="PackedScene" path="res://scenes/game_over.tscn" id="6_game_over"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
 size = Vector2(1280, 10)
@@ -55,3 +56,5 @@ position = Vector2(640, 360)
 position = Vector2(900, 200)
 
 [node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="GameOverScreen" parent="." instance=ExtResource("6_game_over")]

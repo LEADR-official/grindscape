@@ -72,11 +72,12 @@ func _on_cooldown_finished() -> void:
 func _begin_crumble() -> void:
 	_on_cooldown = true
 	_pending_mine = false
+	var origin := position
 	var tween := create_tween()
 	for i in range(4):
-		tween.tween_property(_color_rect, "position:x", 4.0, 0.075)
-		tween.tween_property(_color_rect, "position:x", -4.0, 0.075)
-	tween.tween_property(_color_rect, "position:x", 0.0, 0.075)
+		tween.tween_property(self, "position:x", origin.x + 4.0, 0.075)
+		tween.tween_property(self, "position:x", origin.x - 4.0, 0.075)
+	tween.tween_property(self, "position:x", origin.x, 0.075)
 	tween.tween_callback(_despawn)
 
 
