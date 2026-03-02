@@ -24,3 +24,5 @@ CLAUDE.md
 
 leadr_settings.tres
 *.zip
+
+.DS_Store

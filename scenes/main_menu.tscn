@@ -1,49 +1,140 @@
-[gd_scene load_steps=2 format=3 uid="uid://main_menu_scene"]
+[gd_scene load_steps=5 format=3 uid="uid://d2bvhbrxxfd6x"]
 
-[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://buv7do4qm1ww2" path="res://scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://dumqxg4nyevt1" path="res://assets/frames/Panel/panel-000.png" id="3_panel"]
+[ext_resource type="Texture2D" uid="uid://dwlb2prek7cdg" path="res://assets/frames/Divider Fade/divider-fade-003.png" id="4_divider"]
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_script")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.15, 0.12, 0.1, 1)
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(400, 0)
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 396.0
-offset_bottom = 100.0
-
-[node name="TitleLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="Panel" type="NinePatchRect" parent="MarginContainer"]
+modulate = Color(0.85, 0.75, 0.6, 1)
 layout_mode = 2
+texture = ExtResource("3_panel")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="PaddingContainer" type="MarginContainer" parent="MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 68
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 42
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/PaddingContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleRow" type="HBoxContainer" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="DividerLeftContainer" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DividerLeft" type="TextureRect" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow/DividerLeftContainer"]
+modulate = Color(0.24, 0.16, 0.09, 1)
+custom_minimum_size = Vector2(100, 16)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -8.0
+offset_bottom = 8.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("4_divider")
+stretch_mode = 5
+
+[node name="TitleMargin" type="MarginContainer" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow/TitleMargin"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
 text = "GrindScape"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="DividerRightContainer" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DividerRight" type="TextureRect" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow/DividerRightContainer"]
+modulate = Color(0.24, 0.16, 0.09, 1)
+custom_minimum_size = Vector2(100, 16)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -8.0
+offset_right = 100.0
+offset_bottom = 8.0
+grow_vertical = 2
+texture = ExtResource("4_divider")
+stretch_mode = 5
+flip_h = true
+
+[node name="Spacer1" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="HowToPlayLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="HowToPlayLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-text = "How To Play: Click to move, mine rocks, fight skeletons"
+text = "How To Play: Click to move, mine rocks, don't die."
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="HSeparator2" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="Spacer2" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
-[node name="PlayButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="PlayButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Play"
 
-[node name="LeaderboardsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="LeaderboardsButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Leaderboards"
