@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://jeki4rqohakj" path="res://scripts/game.gd" id="3_game_script"]
 [ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" path="res://scenes/skeleton.tscn" id="5_skeleton"]
-[ext_resource type="PackedScene" path="res://scenes/game_over.tscn" id="6_game_over"]
+[ext_resource type="PackedScene" uid="uid://bo7thar1fkyio" path="res://scenes/game_over.tscn" id="6_game_over"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
 size = Vector2(1280, 10)

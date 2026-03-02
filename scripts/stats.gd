@@ -47,6 +47,10 @@ func get_ore_per_minute() -> float:
 	return (float(ore_count) / survival_time_seconds) * 60.0
 
 
+func get_score() -> float:
+	return xp * sqrt(survival_time_seconds)
+
+
 # --- Mutation methods ---
 
 
