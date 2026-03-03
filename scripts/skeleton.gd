@@ -62,9 +62,17 @@ func _physics_process(_delta: float) -> void:
 
 	if distance > ATTACK_RANGE:
 		velocity = direction * CHASE_SPEED
+		var pos_before := global_position
 		move_and_slide()
-		if _sprite.animation not in ["run", "defend"]:
-			_sprite.play("run")
+		var moved := global_position.distance_to(pos_before)
+
+		# Check if actually moving or blocked
+		if moved > 0.5:
+			if _sprite.animation not in ["run", "defend"]:
+				_sprite.play("run")
+		else:
+			if _sprite.animation == "run":
+				_sprite.play("idle")
 	else:
 		velocity = Vector2.ZERO
 		if _sprite.animation == "run":
@@ -125,6 +133,39 @@ func _die() -> void:
 	_attack_cooldown = false
 	_in_combat = false
 	_health_bar.visible = false
+
+	# Death animation: idle pose, paused
+	_sprite.play("idle")
+	_sprite.pause()
+
+	# Rotate to fall backwards (direction based on facing)
+	var rotation_amount: float = deg_to_rad(90.0) if _sprite.flip_h else deg_to_rad(-90.0)
+
+	var tween := create_tween()
+	tween.finished.connect(_finish_death)
+	tween.set_parallel(true)
+
+	# Rotate with bounce easing
+	(
+		tween
+		. tween_property(_sprite, "rotation", rotation_amount, 0.5)
+		. set_ease(Tween.EASE_OUT)
+		. set_trans(Tween.TRANS_BOUNCE)
+	)
+
+	# Move slightly downward
+	(
+		tween
+		. tween_property(_sprite, "position:y", _sprite.position.y + 20.0, 0.5)
+		. set_ease(Tween.EASE_OUT)
+		. set_trans(Tween.TRANS_BOUNCE)
+	)
+
+	# Fade out over 2 seconds (after rotation completes)
+	tween.chain().tween_property(_sprite, "modulate:a", 0.0, 2.0)
+
+
+func _finish_death() -> void:
 	visible = false
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 	var wait := randf_range(MIN_RESPAWN_TIME, MAX_RESPAWN_TIME)
@@ -142,6 +183,12 @@ func _respawn() -> void:
 	_update_health_bar()
 	visible = true
 	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+
+	# Reset sprite properties modified by death tween
+	_sprite.rotation = 0.0
+	_sprite.position = Vector2.ZERO
+	_sprite.modulate = Color.WHITE
+
 	_sprite.play("idle")
 	_facing_right = true
 	_sprite.flip_h = false
