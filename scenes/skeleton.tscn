@@ -21,6 +21,7 @@ input_pickable = true
 shape = SubResource("RectangleShape2D_hit")
 
 [node name="HealthBar" type="Control" parent="."]
+z_index = 1
 offset_left = -16.0
 offset_top = -22.0
 offset_right = 16.0
@@ -31,16 +32,16 @@ mouse_filter = 2
 offset_right = 32.0
 offset_bottom = 4.0
 mouse_filter = 2
-color = Color(0.2, 0.2, 0.2, 1)
+color = Color(0.984, 0.0, 0.035, 1)
 
 [node name="Fill" type="ColorRect" parent="HealthBar"]
 offset_right = 32.0
 offset_bottom = 4.0
 mouse_filter = 2
-color = Color(0.2, 0.8, 0.2, 1)
+color = Color(0.459, 0.984, 0.298, 1)
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 3.0
 one_shot = true
 
 [node name="DamageCooldownTimer" type="Timer" parent="."]

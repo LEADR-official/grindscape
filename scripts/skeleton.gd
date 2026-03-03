@@ -16,8 +16,6 @@ const ARENA_MARGIN: float = 60.0
 const ARENA_WIDTH: float = 1280.0
 const ARENA_HEIGHT: float = 720.0
 const HEALTH_BAR_WIDTH: float = 32.0
-const HEALTH_COLOR_FULL := Color(0.2, 0.8, 0.2, 1)
-const HEALTH_COLOR_EMPTY := Color(0.8, 0.15, 0.15, 1)
 
 var _hits_remaining: int = HITS_TO_KILL
 var _pending_attack: bool = false
@@ -197,7 +195,6 @@ func _respawn() -> void:
 func _update_health_bar() -> void:
 	var ratio := float(_hits_remaining) / float(HITS_TO_KILL)
 	_health_fill.size.x = HEALTH_BAR_WIDTH * ratio
-	_health_fill.color = HEALTH_COLOR_EMPTY.lerp(HEALTH_COLOR_FULL, ratio)
 
 
 func _on_animation_finished() -> void:

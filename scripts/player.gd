@@ -9,21 +9,29 @@ const MOVE_SPEED: float = 150.0
 const ARRIVAL_THRESHOLD: float = 2.0
 const PIXELS_PER_METER: float = 32.0
 const MAX_HEALTH: int = 10
+const HEALTH_BAR_WIDTH: float = 32.0
 
 var health: int = MAX_HEALTH
 var _target_position: Vector2
 var _facing_right: bool = true
 var _pending_idle: String = "idle"
 var _is_action_playing: bool = false
+var _in_combat: bool = false
 
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var _health_bar: Control = $HealthBar
+@onready var _health_fill: ColorRect = $HealthBar/Fill
+@onready var _combat_timer: Timer = $CombatTimer
 
 
 func _ready() -> void:
 	_target_position = position
 	health_changed.emit(health, MAX_HEALTH)
 	_sprite.animation_finished.connect(_on_animation_finished)
+	_combat_timer.timeout.connect(_on_combat_timer_timeout)
 	_sprite.play("idle")
+	_health_bar.visible = false
+	_update_health_bar()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -37,6 +45,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func take_damage(amount: int) -> void:
 	health = max(health - amount, 0)
 	health_changed.emit(health, MAX_HEALTH)
+	_in_combat = true
+	_health_bar.visible = true
+	_combat_timer.start()
+	_update_health_bar()
 	if health <= 0:
 		player_died.emit()
 
@@ -94,3 +106,13 @@ func _on_animation_finished() -> void:
 	if _sprite.animation in ["mine", "attack"]:
 		_is_action_playing = false
 		_sprite.play(_pending_idle)
+
+
+func _update_health_bar() -> void:
+	var ratio := float(health) / float(MAX_HEALTH)
+	_health_fill.size.x = HEALTH_BAR_WIDTH * ratio
+
+
+func _on_combat_timer_timeout() -> void:
+	_in_combat = false
+	_health_bar.visible = false

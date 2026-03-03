@@ -10,3 +10,24 @@ script = ExtResource("1_player_script")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_player")
+
+[node name="HealthBar" type="Control" parent="."]
+z_index = 1
+offset_left = -16.0
+offset_top = -40.0
+offset_right = 16.0
+offset_bottom = -36.0
+
+[node name="Background" type="ColorRect" parent="HealthBar"]
+offset_right = 32.0
+offset_bottom = 4.0
+color = Color(0.984, 0.0, 0.035, 1)
+
+[node name="Fill" type="ColorRect" parent="HealthBar"]
+offset_right = 32.0
+offset_bottom = 4.0
+color = Color(0.459, 0.984, 0.298, 1)
+
+[node name="CombatTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
