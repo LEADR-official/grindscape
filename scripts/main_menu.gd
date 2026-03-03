@@ -7,9 +7,14 @@ extends CanvasLayer
 
 func _ready() -> void:
 	_play_button.pressed.connect(_on_play)
-	_leaderboards_button.disabled = true
+	_leaderboards_button.pressed.connect(_on_leaderboards)
 
 
 func _on_play() -> void:
 	Stats.reset()
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
+
+
+func _on_leaderboards() -> void:
+	get_tree().change_scene_to_file("res://scenes/leaderboards.tscn")
+

@@ -54,13 +54,25 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _mine() -> void:
 	_pending_mine = false
-	ore_mined.emit()
-	_mines_until_despawn -= 1
-	if _mines_until_despawn <= 0:
-		_begin_crumble()
+	
+	var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
+	var roll := randf()
+	print("Mining attempt: roll=%.2f, success_threshold=%.2f" % [roll, success_threshold])
+	
+	if roll <= success_threshold:
+		ore_mined.emit()
+		_mines_until_despawn -= 1
+		if _mines_until_despawn <= 0:
+			_begin_crumble()
+		else:
+			_on_cooldown = true
+			_color_rect.color = COOLDOWN_COLOR
+			_cooldown_timer.start()
 	else:
+		# Failed mine attempt
 		_on_cooldown = true
-		_color_rect.color = COOLDOWN_COLOR
+		# Play "failed mine" sound effect here
+		# _color_rect.color = COOLDOWN_COLOR
 		_cooldown_timer.start()
 
 
