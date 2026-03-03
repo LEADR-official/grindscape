@@ -24,12 +24,14 @@ func _ready() -> void:
 func _on_ore_mined() -> void:
 	Stats.add_ore()
 	Stats.add_xp(ORE_XP_VALUE)
+	_player.play_mine_animation(_rock.global_position)
 	_player.stop()
 
 
 func _on_skeleton_hit() -> void:
 	Stats.add_xp(SKELETON_HIT_XP)
 	Stats.add_damage_dealt(1)
+	_player.play_attack_animation(_skeleton.global_position)
 	_player.stop()
 
 

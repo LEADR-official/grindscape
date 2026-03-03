@@ -26,6 +26,7 @@ var _dead: bool = false
 var _in_combat: bool = false
 var _damage_ready: bool = true
 var _player: CharacterBody2D
+var _facing_right: bool = true
 
 @onready var _hit_area: Area2D = $HitArea
 @onready var _color_rect: ColorRect = $ColorRect
@@ -34,6 +35,7 @@ var _player: CharacterBody2D
 @onready var _damage_cooldown_timer: Timer = $DamageCooldownTimer
 @onready var _health_bar: Control = $HealthBar
 @onready var _health_fill: ColorRect = $HealthBar/Fill
+@onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func _ready() -> void:
@@ -43,22 +45,35 @@ func _ready() -> void:
 	_attack_cooldown_timer.timeout.connect(_on_attack_cooldown_finished)
 	_respawn_timer.timeout.connect(_respawn)
 	_damage_cooldown_timer.timeout.connect(_on_damage_cooldown_finished)
+	_sprite.animation_finished.connect(_on_animation_finished)
 	_health_bar.visible = false
 	_update_health_bar()
+	_sprite.play("idle")
 
 
 func _physics_process(_delta: float) -> void:
 	if _dead or _player == null:
 		return
 	var distance := global_position.distance_to(_player.global_position)
+	var direction := global_position.direction_to(_player.global_position)
+
+	if direction.x != 0:
+		_facing_right = direction.x > 0
+		_sprite.flip_h = not _facing_right
+
 	if distance > ATTACK_RANGE:
-		velocity = global_position.direction_to(_player.global_position) * CHASE_SPEED
+		velocity = direction * CHASE_SPEED
 		move_and_slide()
+		if _sprite.animation not in ["run", "defend"]:
+			_sprite.play("run")
 	else:
 		velocity = Vector2.ZERO
+		if _sprite.animation == "run":
+			_sprite.play("idle")
 		if _damage_ready:
 			_damage_ready = false
 			_damage_cooldown_timer.start()
+			_sprite.play("attack")
 			skeleton_attacked_player.emit()
 
 
@@ -88,6 +103,7 @@ func _attack() -> void:
 	_attack_cooldown_timer.start()
 	_hits_remaining -= 1
 	_update_health_bar()
+	_sprite.play("defend")
 	skeleton_hit.emit()
 	if _hits_remaining <= 0:
 		skeleton_killed.emit()
@@ -127,9 +143,23 @@ func _respawn() -> void:
 	_update_health_bar()
 	visible = true
 	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+	_sprite.play("idle")
+	_facing_right = true
+	_sprite.flip_h = false
 
 
 func _update_health_bar() -> void:
 	var ratio := float(_hits_remaining) / float(HITS_TO_KILL)
 	_health_fill.size.x = HEALTH_BAR_WIDTH * ratio
 	_health_fill.color = HEALTH_COLOR_EMPTY.lerp(HEALTH_COLOR_FULL, ratio)
+
+
+func _on_animation_finished() -> void:
+	if _dead or _player == null:
+		return
+	if _sprite.animation in ["defend", "attack"]:
+		var distance := global_position.distance_to(_player.global_position)
+		if distance > ATTACK_RANGE:
+			_sprite.play("run")
+		else:
+			_sprite.play("idle")
