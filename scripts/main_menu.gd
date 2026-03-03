@@ -17,4 +17,3 @@ func _on_play() -> void:
 
 func _on_leaderboards() -> void:
 	get_tree().change_scene_to_file("res://scenes/leaderboards.tscn")
-

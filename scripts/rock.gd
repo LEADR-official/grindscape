@@ -54,11 +54,11 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _mine() -> void:
 	_pending_mine = false
-	
+
 	var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
 	var roll := randf()
 	print("Mining attempt: roll=%.2f, success_threshold=%.2f" % [roll, success_threshold])
-	
+
 	if roll <= success_threshold:
 		ore_mined.emit()
 		_mines_until_despawn -= 1
