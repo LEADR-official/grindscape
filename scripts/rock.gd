@@ -3,10 +3,11 @@ extends StaticBody2D
 ## After a random number of mines (1–13), despawns and respawns elsewhere.
 
 signal ore_mined
+signal mine_attempted
 signal rock_crumbled
 
-const ROCK_COLOR := Color(0.55, 0.35, 0.17, 1)
-const COOLDOWN_COLOR := Color(0.3, 0.3, 0.3, 1)
+const COOLDOWN_MODULATE := Color(0.6, 0.55, 0.5, 1)
+const NORMAL_MODULATE := Color(1, 1, 1, 1)
 const MIN_MINES_BEFORE_DESPAWN: int = 1
 const MAX_MINES_BEFORE_DESPAWN: int = 13
 const MIN_RESPAWN_TIME: float = 1.0
@@ -21,7 +22,7 @@ var _despawned: bool = false
 var _mines_until_despawn: int = 0
 
 @onready var _interaction_area: Area2D = $InteractionArea
-@onready var _color_rect: ColorRect = $ColorRect
+@onready var _sprite: Sprite2D = $Sprite2D
 @onready var _cooldown_timer: Timer = $CooldownTimer
 @onready var _respawn_timer: Timer = $RespawnTimer
 
@@ -54,6 +55,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _mine() -> void:
 	_pending_mine = false
+	mine_attempted.emit()
 
 	var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
 	var roll := randf()
@@ -66,19 +68,19 @@ func _mine() -> void:
 			_begin_crumble()
 		else:
 			_on_cooldown = true
-			_color_rect.color = COOLDOWN_COLOR
+			_sprite.modulate = COOLDOWN_MODULATE
 			_cooldown_timer.start()
 	else:
 		# Failed mine attempt
 		_on_cooldown = true
 		# Play "failed mine" sound effect here
-		# _color_rect.color = COOLDOWN_COLOR
+		# _sprite.modulate = COOLDOWN_MODULATE
 		_cooldown_timer.start()
 
 
 func _on_cooldown_finished() -> void:
 	_on_cooldown = false
-	_color_rect.color = ROCK_COLOR
+	_sprite.modulate = NORMAL_MODULATE
 
 
 func _begin_crumble() -> void:
@@ -111,7 +113,7 @@ func _respawn() -> void:
 	var new_y := randf_range(ARENA_MARGIN, ARENA_HEIGHT - ARENA_MARGIN)
 	global_position = Vector2(new_x, new_y)
 	_despawned = false
-	_color_rect.color = ROCK_COLOR
+	_sprite.modulate = NORMAL_MODULATE
 	visible = true
 	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	_roll_mines_until_despawn()

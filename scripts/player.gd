@@ -5,7 +5,7 @@ extends CharacterBody2D
 signal player_died
 signal health_changed(current: int, maximum: int)
 
-const MOVE_SPEED: float = 200.0
+const MOVE_SPEED: float = 150.0
 const ARRIVAL_THRESHOLD: float = 2.0
 const PIXELS_PER_METER: float = 32.0
 const MAX_HEALTH: int = 10

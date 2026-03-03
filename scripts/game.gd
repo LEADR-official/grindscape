@@ -14,6 +14,7 @@ const DAMAGE_TAKEN_XP: float = 1.0
 
 
 func _ready() -> void:
+	_rock.mine_attempted.connect(_on_mine_attempted)
 	_rock.ore_mined.connect(_on_ore_mined)
 	_skeleton.skeleton_hit.connect(_on_skeleton_hit)
 	_skeleton.skeleton_killed.connect(_on_skeleton_killed)
@@ -21,11 +22,14 @@ func _ready() -> void:
 	_player.player_died.connect(_on_player_died)
 
 
+func _on_mine_attempted() -> void:
+	_player.play_mine_animation(_rock.global_position)
+	_player.stop()
+
+
 func _on_ore_mined() -> void:
 	Stats.add_ore()
 	Stats.add_xp(ORE_XP_VALUE)
-	_player.play_mine_animation(_rock.global_position)
-	_player.stop()
 
 
 func _on_skeleton_hit() -> void:

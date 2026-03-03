@@ -7,7 +7,7 @@ signal skeleton_killed
 signal skeleton_attacked_player
 
 const CHASE_SPEED: float = 70.0
-const ATTACK_RANGE: float = 48.0
+const ATTACK_RANGE: float = 72.0
 const DAMAGE_COOLDOWN: float = 1.5
 const HITS_TO_KILL: int = 3
 const MIN_RESPAWN_TIME: float = 3.0
@@ -29,7 +29,6 @@ var _player: CharacterBody2D
 var _facing_right: bool = true
 
 @onready var _hit_area: Area2D = $HitArea
-@onready var _color_rect: ColorRect = $ColorRect
 @onready var _attack_cooldown_timer: Timer = $AttackCooldownTimer
 @onready var _respawn_timer: Timer = $RespawnTimer
 @onready var _damage_cooldown_timer: Timer = $DamageCooldownTimer
