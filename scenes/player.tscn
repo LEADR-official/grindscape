@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dpt1j22nxfw0x"]
 
-[ext_resource type="Script" uid="uid://ya7867he1e43" path="res://scripts/player.gd" id="1_player_script"]
+[ext_resource type="Script" uid="uid://cwsm14y6ch7m8" path="res://scripts/player.gd" id="1_player_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(64, 64)
@@ -13,17 +13,21 @@ shape = SubResource("RectangleShape2D_player")
 
 [node name="HealthBar" type="Control" parent="."]
 z_index = 1
+layout_mode = 3
+anchors_preset = 0
 offset_left = -16.0
 offset_top = -40.0
 offset_right = 16.0
 offset_bottom = -36.0
 
 [node name="Background" type="ColorRect" parent="HealthBar"]
+layout_mode = 0
 offset_right = 32.0
 offset_bottom = 4.0
-color = Color(0.984, 0.0, 0.035, 1)
+color = Color(0.984, 0, 0.035, 1)
 
 [node name="Fill" type="ColorRect" parent="HealthBar"]
+layout_mode = 0
 offset_right = 32.0
 offset_bottom = 4.0
 color = Color(0.459, 0.984, 0.298, 1)
