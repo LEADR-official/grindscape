@@ -30,6 +30,7 @@ func _on_mine_attempted() -> void:
 func _on_ore_mined() -> void:
 	Stats.add_ore()
 	Stats.add_xp(ORE_XP_VALUE)
+	_player.disengage()
 
 
 func _on_skeleton_hit() -> void:

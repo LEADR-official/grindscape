@@ -16,7 +16,6 @@ const ARENA_MARGIN: float = 60.0
 const ARENA_WIDTH: float = 1280.0
 const ARENA_HEIGHT: float = 720.0
 
-var _pending_mine: bool = false
 var _on_cooldown: bool = false
 var _despawned: bool = false
 var _mines_until_despawn: int = 0
@@ -29,32 +28,26 @@ var _mines_until_despawn: int = 0
 
 func _ready() -> void:
 	_interaction_area.input_event.connect(_on_interaction_input_event)
-	_interaction_area.body_entered.connect(_on_body_entered)
 	_cooldown_timer.timeout.connect(_on_cooldown_finished)
 	_respawn_timer.timeout.connect(_respawn)
 	_roll_mines_until_despawn()
 
 
-func _on_interaction_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if _on_cooldown or _despawned:
+func is_engageable() -> bool:
+	return not _despawned
+
+
+func try_mine(player: CharacterBody2D) -> void:
+	# Check if player is in interaction range
+	if player not in _interaction_area.get_overlapping_bodies():
 		return
-	if event is InputEventMouseButton:
-		var mb := event as InputEventMouseButton
-		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
-			_pending_mine = true
-			for body in _interaction_area.get_overlapping_bodies():
-				if body.is_in_group("player"):
-					_mine()
-					return
 
+	# During cooldown, show idle pose with pickaxe
+	if _on_cooldown or _despawned:
+		player.play_idle_with_tool("pickaxe")
+		return
 
-func _on_body_entered(body: Node2D) -> void:
-	if _pending_mine and not _despawned and body.is_in_group("player"):
-		_mine()
-
-
-func _mine() -> void:
-	_pending_mine = false
+	# Emit signal to trigger animation and XP via game.gd
 	mine_attempted.emit()
 
 	var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
@@ -73,9 +66,18 @@ func _mine() -> void:
 	else:
 		# Failed mine attempt
 		_on_cooldown = true
-		# Play "failed mine" sound effect here
-		# _sprite.modulate = COOLDOWN_MODULATE
 		_cooldown_timer.start()
+
+
+func _on_interaction_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if _despawned:
+		return
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
+			var player := get_tree().get_first_node_in_group("player") as CharacterBody2D
+			if player and player.has_method("engage"):
+				player.engage(self, "mine")
 
 
 func _on_cooldown_finished() -> void:
@@ -85,7 +87,6 @@ func _on_cooldown_finished() -> void:
 
 func _begin_crumble() -> void:
 	_on_cooldown = true
-	_pending_mine = false
 	var origin := position
 	var tween := create_tween()
 	for i in range(4):
@@ -98,7 +99,6 @@ func _begin_crumble() -> void:
 func _despawn() -> void:
 	_despawned = true
 	_on_cooldown = false
-	_pending_mine = false
 	rock_crumbled.emit()
 	visible = false
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)

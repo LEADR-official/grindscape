@@ -18,7 +18,6 @@ const ARENA_HEIGHT: float = 720.0
 const HEALTH_BAR_WIDTH: float = 32.0
 
 var _hits_remaining: int = HITS_TO_KILL
-var _pending_attack: bool = false
 var _attack_cooldown: bool = false
 var _dead: bool = false
 var _in_combat: bool = false
@@ -38,7 +37,6 @@ var _facing_right: bool = true
 func _ready() -> void:
 	_player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 	_hit_area.input_event.connect(_on_hit_area_input_event)
-	_hit_area.body_entered.connect(_on_body_entered)
 	_attack_cooldown_timer.timeout.connect(_on_attack_cooldown_finished)
 	_respawn_timer.timeout.connect(_respawn)
 	_damage_cooldown_timer.timeout.connect(_on_damage_cooldown_finished)
@@ -46,6 +44,33 @@ func _ready() -> void:
 	_health_bar.visible = false
 	_update_health_bar()
 	_sprite.play("idle")
+
+
+func is_engageable() -> bool:
+	return not _dead
+
+
+func try_attack(player: CharacterBody2D) -> void:
+	# Check if player is in hit range
+	if player not in _hit_area.get_overlapping_bodies():
+		return
+
+	# During cooldown, show idle pose with knife
+	if _attack_cooldown or _dead:
+		player.play_idle_with_tool("knife")
+		return
+
+	_attack_cooldown = true
+	_in_combat = true
+	_health_bar.visible = true
+	_attack_cooldown_timer.start()
+	_hits_remaining -= 1
+	_update_health_bar()
+	_sprite.play("defend")
+	skeleton_hit.emit()
+	if _hits_remaining <= 0:
+		skeleton_killed.emit()
+		_die()
 
 
 func _physics_process(_delta: float) -> void:
@@ -83,36 +108,13 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_hit_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if _attack_cooldown or _dead:
+	if _dead:
 		return
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
-			_pending_attack = true
-			for body in _hit_area.get_overlapping_bodies():
-				if body.is_in_group("player"):
-					_attack()
-					return
-
-
-func _on_body_entered(body: Node2D) -> void:
-	if _pending_attack and not _dead and body.is_in_group("player"):
-		_attack()
-
-
-func _attack() -> void:
-	_pending_attack = false
-	_attack_cooldown = true
-	_in_combat = true
-	_health_bar.visible = true
-	_attack_cooldown_timer.start()
-	_hits_remaining -= 1
-	_update_health_bar()
-	_sprite.play("defend")
-	skeleton_hit.emit()
-	if _hits_remaining <= 0:
-		skeleton_killed.emit()
-		_die()
+			if _player and _player.has_method("engage"):
+				_player.engage(self, "attack")
 
 
 func _on_attack_cooldown_finished() -> void:
@@ -127,7 +129,6 @@ func _on_damage_cooldown_finished() -> void:
 
 func _die() -> void:
 	_dead = true
-	_pending_attack = false
 	_attack_cooldown = false
 	_in_combat = false
 	_health_bar.visible = false
