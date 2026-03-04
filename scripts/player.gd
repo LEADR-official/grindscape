@@ -24,6 +24,9 @@ var _engaged_action: String = ""
 @onready var _health_bar: Control = $HealthBar
 @onready var _health_fill: ColorRect = $HealthBar/Fill
 @onready var _combat_timer: Timer = $CombatTimer
+@onready var _attack_sfx: AudioStreamPlayer2D = $AttackSFX
+@onready var _take_damage_sfx: AudioStreamPlayer2D = $TakeDamageSFX
+@onready var _death_sfx: AudioStreamPlayer2D = $DeathSFX
 
 
 func _ready() -> void:
@@ -46,12 +49,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func take_damage(amount: int) -> void:
 	health = max(health - amount, 0)
+	_take_damage_sfx.play()
 	health_changed.emit(health, MAX_HEALTH)
 	_in_combat = true
 	_health_bar.visible = true
 	_combat_timer.start()
 	_update_health_bar()
 	if health <= 0:
+		_death_sfx.play()
 		player_died.emit()
 
 
@@ -70,6 +75,10 @@ func disengage() -> void:
 	_engaged_target = null
 	_engaged_action = ""
 	_pending_idle = "idle"
+
+
+func play_attack_sound() -> void:
+	_attack_sfx.play()
 
 
 func _process_engagement() -> void:

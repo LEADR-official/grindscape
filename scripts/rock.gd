@@ -22,6 +22,9 @@ var _mines_until_despawn: int = 0
 @onready var _sprite: Sprite2D = $Sprite2D
 @onready var _cooldown_timer: Timer = $CooldownTimer
 @onready var _respawn_timer: Timer = $RespawnTimer
+@onready var _mine_attempt_sfx: AudioStreamPlayer2D = $MineAttemptSFX
+@onready var _ore_mined_sfx: AudioStreamPlayer2D = $OreMinedSFX
+@onready var _rock_crumble_sfx: AudioStreamPlayer2D = $RockCrumbleSFX
 
 
 func _ready() -> void:
@@ -48,6 +51,7 @@ func try_mine(player: CharacterBody2D) -> void:
 
     # Emit signal to trigger animation and XP via game.gd
     mine_attempted.emit()
+    _mine_attempt_sfx.play()
 
     var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
     var roll := randf()
@@ -55,6 +59,7 @@ func try_mine(player: CharacterBody2D) -> void:
 
     if roll <= success_threshold:
         ore_mined.emit()
+        _ore_mined_sfx.play()
         _mines_until_despawn -= 1
         if _mines_until_despawn <= 0:
             _begin_crumble()
@@ -96,6 +101,7 @@ func _begin_crumble() -> void:
 
 
 func _despawn() -> void:
+    _rock_crumble_sfx.play()
     _despawned = true
     _on_cooldown = false
     rock_crumbled.emit()

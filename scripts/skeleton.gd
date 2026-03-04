@@ -67,6 +67,7 @@ func try_attack(player: CharacterBody2D) -> void:
 	_update_health_bar()
 	_sprite.play("defend")
 	skeleton_hit.emit()
+	_player.play_attack_sound()
 	if _hits_remaining <= 0:
 		skeleton_killed.emit()
 		_die()
