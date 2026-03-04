@@ -1,21 +1,28 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://c8xts8sh4mtg2"]
 
-[ext_resource type="Script" path="res://scripts/rock.gd" id="1_rock_script"]
+[ext_resource type="Script" uid="uid://c52236qw2ck4c" path="res://scripts/rock.gd" id="1_rock_script"]
+[ext_resource type="Texture2D" uid="uid://ditu2gefuqbw8" path="res://assets/sprites/stone/Gold Stone 6.png" id="2_rock_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(48, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
-size = Vector2(128, 128)
+size = Vector2(96, 96)
 
 [node name="Rock" type="StaticBody2D"]
+collision_mask = 0
 script = ExtResource("1_rock_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rock_texture")
+offset = Vector2(0, 10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_body")
 
 [node name="InteractionArea" type="Area2D" parent="."]
-input_pickable = true
+collision_layer = 4
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 shape = SubResource("RectangleShape2D_interaction")
@@ -25,5 +32,5 @@ wait_time = 2.0
 one_shot = true
 
 [node name="RespawnTimer" type="Timer" parent="."]
-one_shot = true
 process_mode = 3
+one_shot = true

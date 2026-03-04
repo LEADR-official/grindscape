@@ -39,7 +39,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
 			_target_position = mb.position
-			print("Click at ", mb.position, " → moving from ", position)
 
 
 func take_damage(amount: int) -> void:
