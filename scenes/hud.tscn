@@ -1,8 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2venttcsvc04"]
+[gd_scene load_steps=7 format=3 uid="uid://c2venttcsvc04"]
 
 [ext_resource type="Script" uid="uid://ckw2tjm6ahutr" path="res://scripts/hud.gd" id="1_hud_script"]
 [ext_resource type="Texture2D" uid="uid://bo7x23gur1dwl" path="res://assets/sprites/icons/Gold_Resource.png" id="2_ore_icon"]
 [ext_resource type="FontFile" uid="uid://bv80lou2pwe3k" path="res://assets/fonts/runescape.ttf" id="3_runescape_font"]
+[ext_resource type="Texture2D" uid="uid://7nhh8xuyac2s" path="res://assets/sprites/ui/SmallRibbons.png" id="4_ribbons"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ribbon"]
+atlas = ExtResource("4_ribbons")
+region = Rect2(128.433, 604.948, 63.0194, 29.8202)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ore"]
 atlas = ExtResource("2_ore_icon")
@@ -11,11 +16,23 @@ region = Rect2(52, 52, 24, 24)
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud_script")
 
+[node name="RibbonBackground" type="TextureRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -640.0
+offset_right = 640.0
+offset_bottom = 38.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_ribbon")
+stretch_mode = 1
+
 [node name="TopBar" type="HBoxContainer" parent="."]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 400.0
-offset_bottom = 40.0
+offset_left = 20.0
+offset_top = 4.0
+offset_right = 408.0
+offset_bottom = 32.0
 mouse_filter = 2
 
 [node name="OreIcon" type="TextureRect" parent="TopBar"]
