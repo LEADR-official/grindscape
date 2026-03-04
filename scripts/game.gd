@@ -7,10 +7,13 @@ const SKELETON_KILL_XP: float = 7.0
 const DAMAGE_PER_HIT: int = 1
 const DAMAGE_TAKEN_XP: float = 1.0
 
+const SPAWN_MARGIN: float = 60.0
+
 @onready var _rock: StaticBody2D = $Rock
 @onready var _player: CharacterBody2D = $Player
 @onready var _skeleton: CharacterBody2D = $Skeleton
 @onready var _game_over_screen: CanvasLayer = $GameOverScreen
+@onready var _grass_layer: TileMapLayer = $GrassLayer
 
 
 func _ready() -> void:
@@ -20,6 +23,19 @@ func _ready() -> void:
 	_skeleton.skeleton_killed.connect(_on_skeleton_killed)
 	_skeleton.skeleton_attacked_player.connect(_on_skeleton_attacked_player)
 	_player.player_died.connect(_on_player_died)
+
+
+func get_spawn_bounds() -> Rect2:
+	var used_rect := _grass_layer.get_used_rect()
+	var tile_size := _grass_layer.tile_set.tile_size
+	var origin := Vector2(used_rect.position) * Vector2(tile_size)
+	var size := Vector2(used_rect.size) * Vector2(tile_size)
+	return Rect2(
+		origin.x + SPAWN_MARGIN,
+		origin.y + SPAWN_MARGIN,
+		size.x - SPAWN_MARGIN * 2,
+		size.y - SPAWN_MARGIN * 2
+	)
 
 
 func _on_mine_attempted() -> void:

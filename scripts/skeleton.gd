@@ -12,12 +12,10 @@ const DAMAGE_COOLDOWN: float = 1.5
 const HITS_TO_KILL: int = 3
 const MIN_RESPAWN_TIME: float = 3.0
 const MAX_RESPAWN_TIME: float = 8.0
-const ARENA_MARGIN: float = 60.0
-const ARENA_WIDTH: float = 1280.0
-const ARENA_HEIGHT: float = 720.0
 const HEALTH_BAR_WIDTH: float = 32.0
 
 var _hits_remaining: int = HITS_TO_KILL
+var _game: Node2D
 var _attack_cooldown: bool = false
 var _dead: bool = false
 var _in_combat: bool = false
@@ -35,6 +33,7 @@ var _facing_right: bool = true
 
 
 func _ready() -> void:
+	_game = get_parent()
 	_player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 	_hit_area.input_event.connect(_on_hit_area_input_event)
 	_attack_cooldown_timer.timeout.connect(_on_attack_cooldown_finished)
@@ -173,8 +172,9 @@ func _finish_death() -> void:
 
 
 func _respawn() -> void:
-	var new_x := randf_range(ARENA_MARGIN, ARENA_WIDTH - ARENA_MARGIN)
-	var new_y := randf_range(ARENA_MARGIN, ARENA_HEIGHT - ARENA_MARGIN)
+	var bounds: Rect2 = _game.get_spawn_bounds()
+	var new_x := randf_range(bounds.position.x, bounds.end.x)
+	var new_y := randf_range(bounds.position.y, bounds.end.y)
 	global_position = Vector2(new_x, new_y)
 	_dead = false
 	_damage_ready = true
