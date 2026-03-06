@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2bvhbrxxfd6x"]
+[gd_scene load_steps=6 format=3 uid="uid://d2bvhbrxxfd6x"]
 
-[ext_resource type="Script" uid="uid://buv7do4qm1ww2" path="res://scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" uid="uid://dumqxg4nyevt1" path="res://assets/frames/Panel/panel-000.png" id="3_panel"]
 [ext_resource type="Texture2D" uid="uid://dwlb2prek7cdg" path="res://assets/frames/Divider Fade/divider-fade-003.png" id="4_divider"]
 [ext_resource type="AudioStream" uid="uid://bjyx7ddpcpweu" path="res://assets/audio/sfx/select_001.ogg" id="5_select_1"]
 [ext_resource type="AudioStream" uid="uid://xrdbl5smx2ih" path="res://assets/audio/sfx/select_002.ogg" id="6_select_2"]
+[ext_resource type="PackedScene" path="res://scenes/name_entry.tscn" id="5_name_entry"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_button"]
 streams_count = 2
@@ -148,3 +149,4 @@ text = "Leaderboards"
 
 [node name="ButtonSFX" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_button")
+[node name="NameEntryDialog" parent="." instance=ExtResource("5_name_entry")]

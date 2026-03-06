@@ -176,7 +176,10 @@ func _populate_leaderboard() -> void:
 		var date_label := row.get_node("Date") as Label
 
 		rank_label.text = str(entry["rank"])
-		name_label.text = entry["name"]
+		if entry["is_player"] and Stats.player_display_name != "":
+			name_label.text = Stats.player_display_name
+		else:
+			name_label.text = entry["name"]
 		date_label.text = entry["date"]
 
 		var value: float = entry["value"]

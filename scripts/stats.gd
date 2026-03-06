@@ -13,6 +13,7 @@ var damage_taken: int = 0
 var damage_dealt: int = 0
 var survival_time_seconds: float = 0.0
 var distance_traveled: float = 0.0
+var player_display_name: String = ""
 
 # --- Derived stats ---
 
@@ -87,6 +88,10 @@ func add_survival_time(delta: float) -> void:
 func add_distance_traveled(amount: float) -> void:
 	distance_traveled += amount
 	stats_updated.emit()
+
+
+func set_player_name(display_name: String) -> void:
+	player_display_name = display_name
 
 
 # --- Reset for Play Again flow ---

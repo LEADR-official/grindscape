@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://c2venttcsvc04"]
 
-[ext_resource type="Script" uid="uid://ckw2tjm6ahutr" path="res://scripts/hud.gd" id="1_hud_script"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud_script"]
 [ext_resource type="Texture2D" uid="uid://bo7x23gur1dwl" path="res://assets/sprites/icons/Gold_Resource.png" id="2_ore_icon"]
 [ext_resource type="FontFile" uid="uid://bv80lou2pwe3k" path="res://assets/fonts/runescape.ttf" id="3_runescape_font"]
 [ext_resource type="Texture2D" uid="uid://7nhh8xuyac2s" path="res://assets/sprites/ui/SmallRibbons.png" id="4_ribbons"]

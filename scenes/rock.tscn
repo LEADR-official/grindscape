@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://c8xts8sh4mtg2"]
 
-[ext_resource type="Script" uid="uid://c52236qw2ck4c" path="res://scripts/rock.gd" id="1_rock_script"]
+[ext_resource type="Script" path="res://scripts/rock.gd" id="1_rock_script"]
 [ext_resource type="Texture2D" uid="uid://ditu2gefuqbw8" path="res://assets/sprites/stone/Gold Stone 6.png" id="2_rock_texture"]
 [ext_resource type="AudioStream" uid="uid://bkertp1laj7lv" path="res://assets/audio/sfx/impactMetal_heavy_000.ogg" id="4_impact_000"]
 [ext_resource type="AudioStream" uid="uid://calq845yxb0ty" path="res://assets/audio/sfx/impactMetal_heavy_001.ogg" id="5_impact_001"]

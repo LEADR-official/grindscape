@@ -1,20 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bo7thar1fkyio"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://scripts/game_over.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/name_entry.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" uid="uid://dumqxg4nyevt1" path="res://assets/frames/Panel/panel-000.png" id="3_panel"]
 [ext_resource type="Texture2D" uid="uid://dlk011gt2atia" path="res://assets/frames/Divider Fade/divider-fade-005.png" id="4_divider"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/select_001.ogg" id="5_select_1"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/select_002.ogg" id="6_select_2"]
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_button"]
-streams_count = 2
-stream_0/stream = ExtResource("5_select_1")
-stream_0/weight = 1.0
-stream_1/stream = ExtResource("6_select_2")
-stream_1/weight = 1.0
-
-[node name="GameOverScreen" type="CanvasLayer"]
+[node name="NameEntryDialog" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_script")
 
@@ -33,10 +24,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_theme")
-theme_override_constants/margin_left = 300
-theme_override_constants/margin_top = 120
-theme_override_constants/margin_right = 300
-theme_override_constants/margin_bottom = 120
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 200
 
 [node name="Panel" type="NinePatchRect" parent="MarginContainer"]
 modulate = Color(0.85, 0.75, 0.6, 1)
@@ -61,7 +52,7 @@ theme_override_constants/margin_bottom = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/PaddingContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
 [node name="TitleRow" type="HBoxContainer" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
 layout_mode = 2
@@ -96,8 +87,8 @@ theme_override_constants/margin_right = 20
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TitleRow/TitleMargin"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "Game Over"
+theme_override_font_sizes/font_size = 36
+text = "Enter Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -124,60 +115,27 @@ flip_h = true
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="ScoreLabel" type="RichTextLabel" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+[node name="NameInput" type="LineEdit" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/default_color = Color(0.24, 0.16, 0.09, 1)
-theme_override_font_sizes/normal_font_size = 28
-bbcode_enabled = true
-text = "[center]You scored [color=#1020FE]1,234[/color] and ranked [color=#1020FE]7th[/color]![/center]"
-fit_content = true
-scroll_active = false
-
-[node name="Spacer2" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 8)
-layout_mode = 2
-
-[node name="StatsContainer" type="VBoxContainer" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="OreLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/StatsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Ore: 0"
-horizontal_alignment = 1
-
-[node name="XPLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/StatsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "XP: 0"
-horizontal_alignment = 1
-
-[node name="KillsLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/StatsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Kills: 0"
-horizontal_alignment = 1
-
-[node name="TimeLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/StatsContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Time: 0s"
-horizontal_alignment = 1
-
-[node name="Spacer3" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-
-[node name="LeaderboardsButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 40)
+custom_minimum_size = Vector2(280, 40)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Leaderboards"
+theme_override_colors/font_color = Color(0.24, 0.16, 0.09, 1)
+theme_override_colors/font_placeholder_color = Color(0.45, 0.35, 0.25, 0.6)
+theme_override_colors/caret_color = Color(0.24, 0.16, 0.09, 1)
+theme_override_colors/selection_color = Color(0.85, 0.75, 0.6, 0.4)
+placeholder_text = "player_1234"
+alignment = 1
+max_length = 20
 
-[node name="Spacer4" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+[node name="ErrorLabel" type="Label" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.15, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="Spacer2" type="Control" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
@@ -186,18 +144,14 @@ layout_mode = 2
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="PlayAgainButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/ButtonRow"]
+[node name="ConfirmButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/ButtonRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 40)
 layout_mode = 2
-text = "Play Again"
+text = "Confirm"
 
-[node name="MainMenuButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/ButtonRow"]
+[node name="CancelButton" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/ButtonRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 40)
 layout_mode = 2
-text = "Main Menu"
-
-[node name="ButtonSFX" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = SubResource("AudioStreamRandomizer_button")
+text = "Cancel"

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dpt1j22nxfw0x" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://c8xts8sh4mtg2" path="res://scenes/rock.tscn" id="2_rock"]
 [ext_resource type="TileSet" uid="uid://ddioyprk5iddw" path="res://assets/tilesets/terrain.tres" id="2_u5sy4"]
-[ext_resource type="Script" uid="uid://jeki4rqohakj" path="res://scripts/game.gd" id="3_game_script"]
+[ext_resource type="Script" uid="uid://b1578tt5yug3l" path="res://scripts/game.gd" id="3_game_script"]
 [ext_resource type="PackedScene" uid="uid://c2venttcsvc04" path="res://scenes/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" uid="uid://8yjed6pnnyv6" path="res://scenes/skeleton.tscn" id="5_skeleton"]
 [ext_resource type="PackedScene" uid="uid://bo7thar1fkyio" path="res://scenes/game_over.tscn" id="6_game_over"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=37 format=3 uid="uid://8yjed6pnnyv6"]
 
-[ext_resource type="Script" uid="uid://2n42ak0q7x4j" path="res://scripts/skeleton.gd" id="1_skeleton_script"]
+[ext_resource type="Script" path="res://scripts/skeleton.gd" id="1_skeleton_script"]
 [ext_resource type="Texture2D" uid="uid://cu3wepdsb1cik" path="res://assets/sprites/enemy/Skull_Attack.png" id="2_attack"]
 [ext_resource type="Texture2D" uid="uid://bjogahm8wchx7" path="res://assets/sprites/enemy/Skull_Guard.png" id="3_guard"]
 [ext_resource type="Texture2D" uid="uid://bqqabsao2r7rq" path="res://assets/sprites/enemy/Skull_Idle.png" id="4_idle"]
