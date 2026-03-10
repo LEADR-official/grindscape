@@ -10,9 +10,9 @@ Most SDK examples are contrived. GrindScape is a playable (if deliberately minim
 
 ## What It Demonstrates
 
-- **Multi-metric submission:** ore count, XP, skeleton kills, survival time, and derived stats like ore-per-minute are each submitted to separate leaderboards from one game session.
 - **Godot SDK integration:** drop-in usage of the LEADR Godot plugin, wired into a real game-over flow.
-- **Leaderboard display:** fetching and showing board data in-game.
+- **Score submission:** ore count, XP, skeleton kills, survival time, and derived stats like ore-per-minute are each submitted to separate leaderboards from one game session.
+- **Leaderboard display (coming soon):** fetching and showing board data in-game.
 
 ## Play It
 
@@ -28,9 +28,21 @@ cd grindscape
 # Open project.godot in the Godot editor, hit Play
 ```
 
-## Design doc
+## Credits
 
-Plan and design intentions are detailed in `./plans/grindscape_design_doc.md`.
+- Inspired by: [Oldschool Runescape](https://oldschool.runescape.com/) by [Jagex](https://www.jagex.com/) 
+- Design and build: [Barney Jackson](https://github.com/barneyjackson)
+- Art: [Tiny Swords](https://pixelfrog-assets.itch.io/tiny-swords) by [Pixel Frog](https://pixelfrog-assets.itch.io/)
+- SFX:
+  - [Impact Sounds](https://kenney.nl/assets/impact-sounds) from [Kenney](https://www.kenney.nl)
+  - [Interface Sounds](https://kenney.nl/assets/interface-sounds) from [Kenney](https://www.kenney.nl)
+  - [Rock smash](https://pixabay.com/sound-effects/nature-rock-smash-6304/) by [freesound_community](https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6304) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=6304)
+  - [Drop coin](https://pixabay.com/sound-effects/film-special-effects-drop-coin-384921/) by [Crunchpix Studio](https://pixabay.com/users/freesound_crunchpixstudio-49769582/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=384921) from [Pixabay](https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=384921)
+  - [Knife Stab Sound Effect](https://pixabay.com/sound-effects/film-special-effects-knife-stab-sound-effect-36354/) by [freesound_community](https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=36354) from [Pixabay](https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=36354)
+  - [Attack Sound 1](https://pixabay.com/sound-effects/film-special-effects-attack-sound-1-384908/) by [Crunchpix Studio](https://pixabay.com/users/freesound_crunchpixstudio-49769582/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=384908) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=384908)
+  - [Game Die](https://pixabay.com/sound-effects/film-special-effects-086398-game-die-81356/) by [freesound_community](https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=81356) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=81356)
+- Music: ["Magic Fantasy Fairy Tale Music"](https://pixabay.com/music/fantasy-dreamy-childrens-magic-fantasy-fairy-tale-music-431276/) by [Ievgen Poltavskyi](https://pixabay.com/users/hitslab-47305729/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431276) from [Pixabay](https://pixabay.com/music/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431276)
+- Font: 
 
 ______________________________________________________________________
 

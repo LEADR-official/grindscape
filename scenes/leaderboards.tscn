@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://4cvsfkudjh5a"]
+[gd_scene load_steps=13 format=3 uid="uid://4cvsfkudjh5a"]
 
 [ext_resource type="Script" uid="uid://021b4eynpyvo" path="res://scripts/leaderboards.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
@@ -7,6 +7,15 @@
 [ext_resource type="Texture2D" uid="uid://bk8ktleafn5xc" path="res://assets/frames/Border/panel-border-026.png" id="5_leaderboard_border"]
 [ext_resource type="Texture2D" uid="uid://cwcndfu24mfdj" path="res://assets/frames/Divider/divider-002.png" id="6_divider_solid"]
 [ext_resource type="FontFile" uid="uid://bv80lou2pwe3k" path="res://assets/fonts/runescape.ttf" id="7_font"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/select_001.ogg" id="8_select_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/select_002.ogg" id="9_select_2"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_button"]
+streams_count = 2
+stream_0/stream = ExtResource("8_select_1")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("9_select_2")
+stream_1/weight = 1.0
 
 [sub_resource type="FontVariation" id="FontVariation_bold"]
 base_font = ExtResource("7_font")
@@ -523,3 +532,6 @@ custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Back"
+
+[node name="ButtonSFX" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_button")

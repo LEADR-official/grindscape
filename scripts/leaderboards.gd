@@ -73,6 +73,7 @@ var _tab_style_active: StyleBoxTexture
 @onready var _leaderboard_vbox: VBoxContainer = %LeaderboardVBox
 @onready var _back_button: Button = %BackButton
 @onready var _tab_buttons: Array[Button] = [%ScoreTab, %OreTab, %XPTab, %KillsTab, %TimeTab]
+@onready var _button_sfx: AudioStreamPlayer = $ButtonSFX
 
 
 func _ready() -> void:
@@ -117,6 +118,7 @@ func _connect_tabs() -> void:
 
 
 func _on_tab_pressed(tab_index: int) -> void:
+	_button_sfx.play()
 	_current_tab = tab_index as LeaderboardType
 	_update_tab_styles()
 	_populate_leaderboard()
@@ -204,4 +206,5 @@ func _format_number(n: int) -> String:
 
 
 func _on_back() -> void:
+	_button_sfx.play()
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

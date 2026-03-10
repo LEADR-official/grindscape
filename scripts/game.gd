@@ -14,6 +14,7 @@ const SPAWN_MARGIN: float = 60.0
 @onready var _skeleton: CharacterBody2D = $Skeleton
 @onready var _game_over_screen: CanvasLayer = $GameOverScreen
 @onready var _grass_layer: TileMapLayer = $GrassLayer
+@onready var _game_die_sfx: AudioStreamPlayer = $GameDieSFX
 
 
 func _ready() -> void:
@@ -72,5 +73,6 @@ func _process(delta: float) -> void:
 
 
 func _on_player_died() -> void:
+	_game_die_sfx.play()
 	get_tree().paused = true
 	_game_over_screen.show_game_over()

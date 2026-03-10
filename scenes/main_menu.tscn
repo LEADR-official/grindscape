@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2bvhbrxxfd6x"]
+[gd_scene load_steps=8 format=3 uid="uid://d2bvhbrxxfd6x"]
 
 [ext_resource type="Script" uid="uid://buv7do4qm1ww2" path="res://scripts/main_menu.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" uid="uid://dumqxg4nyevt1" path="res://assets/frames/Panel/panel-000.png" id="3_panel"]
 [ext_resource type="Texture2D" uid="uid://dwlb2prek7cdg" path="res://assets/frames/Divider Fade/divider-fade-003.png" id="4_divider"]
+[ext_resource type="AudioStream" uid="uid://bjyx7ddpcpweu" path="res://assets/audio/sfx/select_001.ogg" id="5_select_1"]
+[ext_resource type="AudioStream" uid="uid://xrdbl5smx2ih" path="res://assets/audio/sfx/select_002.ogg" id="6_select_2"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_button"]
+streams_count = 2
+stream_0/stream = ExtResource("5_select_1")
+stream_1/stream = ExtResource("6_select_2")
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_script")
@@ -138,3 +145,6 @@ custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Leaderboards"
+
+[node name="ButtonSFX" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_button")

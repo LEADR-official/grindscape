@@ -1,15 +1,36 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8xts8sh4mtg2"]
+[gd_scene load_steps=16 format=3 uid="uid://c8xts8sh4mtg2"]
 
 [ext_resource type="Script" uid="uid://c52236qw2ck4c" path="res://scripts/rock.gd" id="1_rock_script"]
 [ext_resource type="Texture2D" uid="uid://ditu2gefuqbw8" path="res://assets/sprites/stone/Gold Stone 6.png" id="2_rock_texture"]
-[ext_resource type="AudioStream" uid="uid://c3qqsmdr6wic2" path="res://assets/audio/sfx/clink2.wav" id="3_872ht"]
-[ext_resource type="AudioStream" uid="uid://c56bn6lbcpbj" path="res://assets/audio/sfx/rock_break.ogg" id="4_p2d0s"]
+[ext_resource type="AudioStream" uid="uid://bkertp1laj7lv" path="res://assets/audio/sfx/impactMetal_heavy_000.ogg" id="4_impact_000"]
+[ext_resource type="AudioStream" uid="uid://calq845yxb0ty" path="res://assets/audio/sfx/impactMetal_heavy_001.ogg" id="5_impact_001"]
+[ext_resource type="AudioStream" uid="uid://dpy6r4yigjtla" path="res://assets/audio/sfx/impactMetal_heavy_002.ogg" id="6_impact_002"]
+[ext_resource type="AudioStream" uid="uid://cnaudyw6tx5c2" path="res://assets/audio/sfx/impactMetal_heavy_003.ogg" id="7_impact_003"]
+[ext_resource type="AudioStream" uid="uid://msr253y0erje" path="res://assets/audio/sfx/impactMetal_heavy_004.ogg" id="8_impact_004"]
+[ext_resource type="AudioStream" uid="uid://dmb3utneisoh7" path="res://assets/audio/sfx/rock_smash_1.ogg" id="9_rock_smash_1"]
+[ext_resource type="AudioStream" uid="uid://dv2wkgbg0lxle" path="res://assets/audio/sfx/rock_smash_2.ogg" id="10_rock_smash_2"]
+[ext_resource type="AudioStream" uid="uid://djwupfb57oyj8" path="res://assets/audio/sfx/rock_smash_3.ogg" id="11_rock_smash_3"]
+[ext_resource type="AudioStream" uid="uid://cym8puuwfm5ib" path="res://assets/audio/sfx/drop-coin.mp3" id="13_drop_coin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(48, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
 size = Vector2(96, 96)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mine"]
+streams_count = 5
+stream_0/stream = ExtResource("4_impact_000")
+stream_1/stream = ExtResource("5_impact_001")
+stream_2/stream = ExtResource("6_impact_002")
+stream_3/stream = ExtResource("7_impact_003")
+stream_4/stream = ExtResource("8_impact_004")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_crumble"]
+streams_count = 3
+stream_0/stream = ExtResource("9_rock_smash_1")
+stream_1/stream = ExtResource("10_rock_smash_2")
+stream_2/stream = ExtResource("11_rock_smash_3")
 
 [node name="Rock" type="StaticBody2D"]
 collision_mask = 0
@@ -38,11 +59,10 @@ process_mode = 3
 one_shot = true
 
 [node name="MineAttemptSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_872ht")
+stream = SubResource("AudioStreamRandomizer_mine")
 
 [node name="OreMinedSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_p2d0s")
+stream = ExtResource("13_drop_coin")
 
 [node name="RockCrumbleSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_p2d0s")
-pitch_scale = 0.85
+stream = SubResource("AudioStreamRandomizer_crumble")

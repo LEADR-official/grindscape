@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://dpt1j22nxfw0x"]
+[gd_scene load_steps=55 format=3 uid="uid://dpt1j22nxfw0x"]
 
 [ext_resource type="Script" uid="uid://cwsm14y6ch7m8" path="res://scripts/player.gd" id="1_player_script"]
 [ext_resource type="Texture2D" uid="uid://bars2ewhb746u" path="res://assets/sprites/character/Pawn_Interact Knife.png" id="2_attack"]
@@ -7,7 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://cs66ldtg1jea6" path="res://assets/sprites/character/Pawn_Idle Pickaxe.png" id="5_idle_pickaxe"]
 [ext_resource type="Texture2D" uid="uid://b471ibmwnkh5d" path="res://assets/sprites/character/Pawn_Interact Pickaxe.png" id="6_mine"]
 [ext_resource type="Texture2D" uid="uid://kxftceppim1o" path="res://assets/sprites/character/Pawn_Run.png" id="7_run"]
-[ext_resource type="AudioStream" uid="uid://cr6up53nyspla" path="res://assets/audio/sfx/placeholder.wav" id="8_smehm"]
+[ext_resource type="AudioStream" uid="uid://u254xq61e5g6" path="res://assets/audio/sfx/attack-sound-1.mp3" id="8_take_damage"]
+[ext_resource type="AudioStream" uid="uid://cbge467mqfqqg" path="res://assets/audio/sfx/stab_1.ogg" id="9_stab_1"]
+[ext_resource type="AudioStream" uid="uid://bn0y4f02ad6k2" path="res://assets/audio/sfx/stab_2.ogg" id="10_stab_2"]
+[ext_resource type="AudioStream" uid="uid://coimi1808iwom" path="res://assets/audio/sfx/stab_3.ogg" id="11_stab_3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_attack_0"]
 atlas = ExtResource("2_attack")
@@ -325,6 +328,12 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(48, 48)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_stab"]
+streams_count = 3
+stream_0/stream = ExtResource("9_stab_1")
+stream_1/stream = ExtResource("10_stab_2")
+stream_2/stream = ExtResource("11_stab_3")
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_player_script")
@@ -362,10 +371,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="AttackSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_smehm")
+stream = SubResource("AudioStreamRandomizer_stab")
 
 [node name="TakeDamageSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_smehm")
-
-[node name="DeathSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_smehm")
+stream = ExtResource("8_take_damage")

@@ -11,6 +11,7 @@ const PLAYER_RANK := 7
 @onready var _leaderboards_button: Button = %LeaderboardsButton
 @onready var _play_again_button: Button = %PlayAgainButton
 @onready var _main_menu_button: Button = %MainMenuButton
+@onready var _button_sfx: AudioStreamPlayer = $ButtonSFX
 
 
 func _ready() -> void:
@@ -65,17 +66,20 @@ func show_game_over() -> void:
 
 
 func _on_leaderboards() -> void:
+	_button_sfx.play()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/leaderboards.tscn")
 
 
 func _on_play_again() -> void:
+	_button_sfx.play()
 	Stats.reset()
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 
 func _on_main_menu() -> void:
+	_button_sfx.play()
 	Stats.reset()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

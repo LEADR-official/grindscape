@@ -59,7 +59,7 @@ func try_mine(player: CharacterBody2D) -> void:
 
     if roll <= success_threshold:
         ore_mined.emit()
-        _ore_mined_sfx.play()
+        get_tree().create_timer(1.0).timeout.connect(_ore_mined_sfx.play)
         _mines_until_despawn -= 1
         if _mines_until_despawn <= 0:
             _begin_crumble()

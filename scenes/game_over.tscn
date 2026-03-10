@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://bo7thar1fkyio"]
+[gd_scene load_steps=9 format=3 uid="uid://bo7thar1fkyio"]
 
 [ext_resource type="Script" uid="uid://bc4r0j6whqk5q" path="res://scripts/game_over.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
 [ext_resource type="Texture2D" uid="uid://dumqxg4nyevt1" path="res://assets/frames/Panel/panel-000.png" id="3_panel"]
 [ext_resource type="Texture2D" uid="uid://dlk011gt2atia" path="res://assets/frames/Divider Fade/divider-fade-005.png" id="4_divider"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/select_001.ogg" id="5_select_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/select_002.ogg" id="6_select_2"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_button"]
+streams_count = 2
+stream_0/stream = ExtResource("5_select_1")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("6_select_2")
+stream_1/weight = 1.0
 
 [node name="GameOverScreen" type="CanvasLayer"]
 process_mode = 3
@@ -188,3 +197,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 40)
 layout_mode = 2
 text = "Main Menu"
+
+[node name="ButtonSFX" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = SubResource("AudioStreamRandomizer_button")

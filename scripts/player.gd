@@ -26,7 +26,6 @@ var _engaged_action: String = ""
 @onready var _combat_timer: Timer = $CombatTimer
 @onready var _attack_sfx: AudioStreamPlayer2D = $AttackSFX
 @onready var _take_damage_sfx: AudioStreamPlayer2D = $TakeDamageSFX
-@onready var _death_sfx: AudioStreamPlayer2D = $DeathSFX
 
 
 func _ready() -> void:
@@ -56,7 +55,6 @@ func take_damage(amount: int) -> void:
 	_combat_timer.start()
 	_update_health_bar()
 	if health <= 0:
-		_death_sfx.play()
 		player_died.emit()
 
 
