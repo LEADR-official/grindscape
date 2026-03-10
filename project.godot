@@ -19,12 +19,17 @@ config/icon="res://icon.svg"
 
 Stats="*res://scripts/stats.gd"
 Music="*res://scenes/music.tscn"
+Leadr="*res://addons/leadr/autoload/leadr_autoload.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/leadr/plugin.cfg")
 
 [rendering]
 

@@ -9,6 +9,7 @@ repos:
       - id: gdlint
         name: gdlint
         description: "Lint GDScript files"
+        exclude: 'addons'
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0

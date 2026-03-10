@@ -73,6 +73,12 @@ func _process(delta: float) -> void:
 
 
 func _on_player_died() -> void:
-	_game_die_sfx.play()
 	get_tree().paused = true
+	_game_die_sfx.play()
 	_game_over_screen.show_game_over()
+
+	var high_scores_board_id: String = "brd_a313d59c-1fee-487a-98d8-e5f77b466f46"
+	var score: float = Stats.get_score()
+	var display_name: String = Stats.player_display_name
+
+	await Leadr.submit_score(high_scores_board_id, score, display_name)
