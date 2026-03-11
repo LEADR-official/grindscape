@@ -28,103 +28,103 @@ var _mines_until_despawn: int = 0
 
 
 func _ready() -> void:
-	_game = get_parent()
-	_interaction_area.input_event.connect(_on_interaction_input_event)
-	_cooldown_timer.timeout.connect(_on_cooldown_finished)
-	_respawn_timer.timeout.connect(_respawn)
-	_roll_mines_until_despawn()
+    _game = get_parent()
+    _interaction_area.input_event.connect(_on_interaction_input_event)
+    _cooldown_timer.timeout.connect(_on_cooldown_finished)
+    _respawn_timer.timeout.connect(_respawn)
+    _roll_mines_until_despawn()
 
 
 func is_engageable() -> bool:
-	return not _despawned
+    return not _despawned
 
 
 func try_mine(player: CharacterBody2D) -> void:
-	# Check if player is in interaction range
-	if player not in _interaction_area.get_overlapping_bodies():
-		return
+    # Check if player is in interaction range
+    if player not in _interaction_area.get_overlapping_bodies():
+        return
 
-	# During cooldown, show idle pose with pickaxe
-	if _on_cooldown or _despawned:
-		player.play_idle_with_tool("pickaxe")
-		return
+    # During cooldown, show idle pose with pickaxe
+    if _on_cooldown or _despawned:
+        player.play_idle_with_tool("pickaxe")
+        return
 
-	# Emit signal to trigger animation and XP via game.gd
-	mine_attempted.emit()
-	_mine_attempt_sfx.play()
+    # Emit signal to trigger animation and XP via game.gd
+    mine_attempted.emit()
+    _mine_attempt_sfx.play()
 
-	var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
-	var roll := randf()
-	print("Mining attempt: roll=%.2f, success_threshold=%.2f" % [roll, success_threshold])
+    var success_threshold: float = clamp(0.5 + (float(int(Stats.xp)) / 1000.0) * 0.45, 0.5, 0.95)
+    var roll := randf()
+    print("Mining attempt: roll=%.2f, success_threshold=%.2f" % [roll, success_threshold])
 
-	if roll <= success_threshold:
-		ore_mined.emit()
-		get_tree().create_timer(1.0).timeout.connect(_ore_mined_sfx.play)
-		_mines_until_despawn -= 1
-		if _mines_until_despawn <= 0:
-			_begin_crumble()
-		else:
-			_on_cooldown = true
-			_sprite.modulate = COOLDOWN_MODULATE
-			_cooldown_timer.start()
-	else:
-		# Failed mine attempt
-		_on_cooldown = true
-		_cooldown_timer.start()
+    if roll <= success_threshold:
+        ore_mined.emit()
+        get_tree().create_timer(1.0).timeout.connect(_ore_mined_sfx.play)
+        _mines_until_despawn -= 1
+        if _mines_until_despawn <= 0:
+            _begin_crumble()
+        else:
+            _on_cooldown = true
+            _sprite.modulate = COOLDOWN_MODULATE
+            _cooldown_timer.start()
+    else:
+        # Failed mine attempt
+        _on_cooldown = true
+        _cooldown_timer.start()
 
 
 func _on_interaction_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if _despawned:
-		return
-	if event is InputEventMouseButton:
-		var mb := event as InputEventMouseButton
-		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
-			var player := get_tree().get_first_node_in_group("player") as CharacterBody2D
-			if player and player.has_method("engage"):
-				player.engage(self, "mine")
+    if _despawned:
+        return
+    if event is InputEventMouseButton:
+        var mb := event as InputEventMouseButton
+        if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
+            var player := get_tree().get_first_node_in_group("player") as CharacterBody2D
+            if player and player.has_method("engage"):
+                player.engage(self, "mine")
 
 
 func _on_cooldown_finished() -> void:
-	_on_cooldown = false
-	_sprite.modulate = NORMAL_MODULATE
+    _on_cooldown = false
+    _sprite.modulate = NORMAL_MODULATE
 
 
 func _begin_crumble() -> void:
-	_on_cooldown = true
-	var origin := position
-	var tween := create_tween()
-	for i in range(4):
-		tween.tween_property(self, "position:x", origin.x + 4.0, 0.075)
-		tween.tween_property(self, "position:x", origin.x - 4.0, 0.075)
-	tween.tween_property(self, "position:x", origin.x, 0.075)
-	tween.tween_callback(_despawn)
+    _on_cooldown = true
+    var origin := position
+    var tween := create_tween()
+    for i in range(4):
+        tween.tween_property(self, "position:x", origin.x + 4.0, 0.075)
+        tween.tween_property(self, "position:x", origin.x - 4.0, 0.075)
+    tween.tween_property(self, "position:x", origin.x, 0.075)
+    tween.tween_callback(_despawn)
 
 
 func _despawn() -> void:
-	_rock_crumble_sfx.play()
-	_despawned = true
-	_on_cooldown = false
-	rock_crumbled.emit()
-	visible = false
-	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
-	var wait := randf_range(MIN_RESPAWN_TIME, MAX_RESPAWN_TIME)
-	_respawn_timer.wait_time = wait
-	_respawn_timer.start()
-	print("Rock crumbled! Respawning in %.1fs" % wait)
+    _rock_crumble_sfx.play()
+    _despawned = true
+    _on_cooldown = false
+    rock_crumbled.emit()
+    visible = false
+    set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+    var wait := randf_range(MIN_RESPAWN_TIME, MAX_RESPAWN_TIME)
+    _respawn_timer.wait_time = wait
+    _respawn_timer.start()
+    print("Rock crumbled! Respawning in %.1fs" % wait)
 
 
 func _respawn() -> void:
-	var bounds: Rect2 = _game.get_spawn_bounds()
-	var new_x := randf_range(bounds.position.x, bounds.end.x)
-	var new_y := randf_range(bounds.position.y, bounds.end.y)
-	global_position = Vector2(new_x, new_y)
-	_despawned = false
-	_sprite.modulate = NORMAL_MODULATE
-	visible = true
-	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
-	_roll_mines_until_despawn()
-	print("Rock respawned at ", global_position, " (%d mines until despawn)" % _mines_until_despawn)
+    var bounds: Rect2 = _game.get_spawn_bounds()
+    var new_x := randf_range(bounds.position.x, bounds.end.x)
+    var new_y := randf_range(bounds.position.y, bounds.end.y)
+    global_position = Vector2(new_x, new_y)
+    _despawned = false
+    _sprite.modulate = NORMAL_MODULATE
+    visible = true
+    set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+    _roll_mines_until_despawn()
+    print("Rock respawned at ", global_position, " (%d mines until despawn)" % _mines_until_despawn)
 
 
 func _roll_mines_until_despawn() -> void:
-	_mines_until_despawn = randi_range(MIN_MINES_BEFORE_DESPAWN, MAX_MINES_BEFORE_DESPAWN)
+    _mines_until_despawn = randi_range(MIN_MINES_BEFORE_DESPAWN, MAX_MINES_BEFORE_DESPAWN)
