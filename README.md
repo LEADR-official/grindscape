@@ -12,11 +12,11 @@ Most SDK examples are contrived. GrindScape is a playable (if deliberately minim
 
 - **Godot SDK integration:** drop-in usage of the LEADR Godot plugin, wired into a real game-over flow.
 - **Score submission:** ore count, XP, skeleton kills, survival time, and derived stats like ore-per-minute are each submitted to separate leaderboards from one game session.
-- **Leaderboard display (coming soon):** fetching and showing board data in-game.
+- **Leaderboard display:** fetching and showing board data in-game.
 
 ## Play It
 
-[Play on itch.io](https://TODO) - runs in your browser, no install needed.
+[Play on itch.io](https://leadr-official.itch.io/grindscape) - runs in your browser, no install needed.
 
 ## Run It Locally
 
