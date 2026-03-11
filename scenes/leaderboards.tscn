@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://4cvsfkudjh5a"]
+[gd_scene load_steps=13 format=3 uid="uid://4cvsfkudjh5a"]
 
 [ext_resource type="Script" uid="uid://021b4eynpyvo" path="res://scripts/leaderboards.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://bg1ymdx4a3b8n" path="res://assets/ui_theme.tres" id="2_theme"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://bv80lou2pwe3k" path="res://assets/fonts/runescape.ttf" id="7_font"]
 [ext_resource type="AudioStream" uid="uid://bjyx7ddpcpweu" path="res://assets/audio/sfx/select_001.ogg" id="8_select_1"]
 [ext_resource type="AudioStream" uid="uid://xrdbl5smx2ih" path="res://assets/audio/sfx/select_002.ogg" id="9_select_2"]
+[ext_resource type="PackedScene" uid="uid://dv8hwj7xn06b7" path="res://scenes/leaderboard_tab.tscn" id="10_leaderboard_tab"]
 
 [sub_resource type="FontVariation" id="FontVariation_bold"]
 base_font = ExtResource("7_font")
@@ -139,40 +140,54 @@ alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="ScoreTab" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn"]
+[node name="AtTimeTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn" instance=ExtResource("10_leaderboard_tab")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+text = "Play Time (All-Time)"
+
+[node name="AtXpTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn" instance=ExtResource("10_leaderboard_tab")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "XP (All-Time)"
+
+[node name="FastestDeathTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn" instance=ExtResource("10_leaderboard_tab")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fastest Death"
+
+[node name="DpsTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn" instance=ExtResource("10_leaderboard_tab")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DPS"
+
+[node name="TabsColumn2" type="VBoxContainer" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ScoreTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn2" instance=ExtResource("10_leaderboard_tab")]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Score"
 
-[node name="OreTab" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn"]
+[node name="OreTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn2" instance=ExtResource("10_leaderboard_tab")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "Ore"
 
-[node name="XPTab" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn"]
+[node name="XPTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn2" instance=ExtResource("10_leaderboard_tab")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "XP"
 
-[node name="KillsTab" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn"]
+[node name="KillsTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn2" instance=ExtResource("10_leaderboard_tab")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 text = "Kills"
 
-[node name="TimeTab" type="Button" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn"]
+[node name="TimeTab" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard/TabsColumn2" instance=ExtResource("10_leaderboard_tab")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Time"
+text = "Play Time"
 
 [node name="LeaderboardPanel" type="NinePatchRect" parent="MarginContainer/Panel/PaddingContainer/VBoxContainer/TabsAndLeaderboard"]
 modulate = Color(0.85, 0.78, 0.65, 1)

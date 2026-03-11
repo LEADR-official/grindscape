@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dv8hwj7xn06b7"]
+
+[node name="LeaderboardTab" type="Button"]
+custom_minimum_size = Vector2(100, 22)
+offset_right = 80.0
+offset_bottom = 31.0
+theme_override_font_sizes/font_size = 16
+text = "Tab"

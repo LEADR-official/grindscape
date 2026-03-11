@@ -28,7 +28,7 @@ var _tab_style_active: StyleBoxTexture
 @onready var _loading_label: Label = %LoadingLabel
 @onready var _rows_container: VBoxContainer = %RowsContainer
 @onready var _back_button: Button = %BackButton
-@onready var _tab_buttons: Array[Button] = [%ScoreTab, %OreTab, %XPTab, %KillsTab, %TimeTab]
+@onready var _tab_buttons: Array[Button] = [%ScoreTab, %OreTab, %XPTab, %KillsTab, %TimeTab, %AtTimeTab, %AtXpTab, %FastestDeathTab, %DpsTab]
 @onready var _button_sfx: AudioStreamPlayer = $ButtonSFX
 
 
