@@ -42,7 +42,7 @@ cd grindscape
   - [Attack Sound 1](https://pixabay.com/sound-effects/film-special-effects-attack-sound-1-384908/) by [Crunchpix Studio](https://pixabay.com/users/freesound_crunchpixstudio-49769582/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=384908) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=384908)
   - [Game Die](https://pixabay.com/sound-effects/film-special-effects-086398-game-die-81356/) by [freesound_community](https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=81356) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=81356)
 - Music: ["Magic Fantasy Fairy Tale Music"](https://pixabay.com/music/fantasy-dreamy-childrens-magic-fantasy-fairy-tale-music-431276/) by [Ievgen Poltavskyi](https://pixabay.com/users/hitslab-47305729/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431276) from [Pixabay](https://pixabay.com/music/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=431276)
-- Font:
+- Font: [RuneScape UF](https://www.dafont.com/runescape-uf.font) by [Nathan P](https://www.dafont.com/nathan-parker.d2602)
 
 ______________________________________________________________________
 
