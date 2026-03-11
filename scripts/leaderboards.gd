@@ -1,69 +1,23 @@
 extends CanvasLayer
 ## Leaderboards screen — displays leaderboard tables with tab navigation.
 
-enum LeaderboardType { SCORE, ORE, XP, KILLS, TIME }
+enum LeaderboardType { SCORE, ORE, XP, KILLS, TIME, AT_TIME, AT_XP, FASTEST_DEATH, DPS }
 
-const PLAYER_RANK := 7
-
-# Hardcoded fake leaderboard data
-var _leaderboard_data: Dictionary = {
-	LeaderboardType.SCORE:
-	[
-		{"rank": 1, "name": "MiningKing", "value": 2847, "date": "Mar 1", "is_player": false},
-		{"rank": 2, "name": "RockLover", "value": 2156, "date": "Feb 28", "is_player": false},
-		{"rank": 3, "name": "OreHunter", "value": 1892, "date": "Feb 25", "is_player": false},
-		{"rank": 5, "name": "CaveExplorer", "value": 1456, "date": "Feb 20", "is_player": false},
-		{"rank": 6, "name": "PickaxePro", "value": 1298, "date": "Feb 15", "is_player": false},
-		{"rank": 7, "name": "YOU", "value": 0, "date": "Today", "is_player": true},
-		{"rank": 8, "name": "Digger42", "value": 1102, "date": "Feb 10", "is_player": false},
-		{"rank": 9, "name": "StoneBreaker", "value": 987, "date": "Feb 5", "is_player": false},
-	],
-	LeaderboardType.ORE:
-	[
-		{"rank": 1, "name": "MiningKing", "value": 89, "date": "Mar 1", "is_player": false},
-		{"rank": 2, "name": "RockLover", "value": 76, "date": "Feb 28", "is_player": false},
-		{"rank": 3, "name": "OreHunter", "value": 64, "date": "Feb 25", "is_player": false},
-		{"rank": 5, "name": "CaveExplorer", "value": 52, "date": "Feb 20", "is_player": false},
-		{"rank": 6, "name": "PickaxePro", "value": 47, "date": "Feb 15", "is_player": false},
-		{"rank": 7, "name": "YOU", "value": 0, "date": "Today", "is_player": true},
-		{"rank": 8, "name": "Digger42", "value": 41, "date": "Feb 10", "is_player": false},
-		{"rank": 9, "name": "StoneBreaker", "value": 38, "date": "Feb 5", "is_player": false},
-	],
-	LeaderboardType.XP:
-	[
-		{"rank": 1, "name": "MiningKing", "value": 312, "date": "Mar 1", "is_player": false},
-		{"rank": 2, "name": "RockLover", "value": 287, "date": "Feb 28", "is_player": false},
-		{"rank": 3, "name": "OreHunter", "value": 245, "date": "Feb 25", "is_player": false},
-		{"rank": 5, "name": "CaveExplorer", "value": 196, "date": "Feb 20", "is_player": false},
-		{"rank": 6, "name": "PickaxePro", "value": 172, "date": "Feb 15", "is_player": false},
-		{"rank": 7, "name": "YOU", "value": 0, "date": "Today", "is_player": true},
-		{"rank": 8, "name": "Digger42", "value": 158, "date": "Feb 10", "is_player": false},
-		{"rank": 9, "name": "StoneBreaker", "value": 143, "date": "Feb 5", "is_player": false},
-	],
-	LeaderboardType.KILLS:
-	[
-		{"rank": 1, "name": "MiningKing", "value": 12, "date": "Mar 1", "is_player": false},
-		{"rank": 2, "name": "RockLover", "value": 10, "date": "Feb 28", "is_player": false},
-		{"rank": 3, "name": "OreHunter", "value": 9, "date": "Feb 25", "is_player": false},
-		{"rank": 5, "name": "CaveExplorer", "value": 7, "date": "Feb 20", "is_player": false},
-		{"rank": 6, "name": "PickaxePro", "value": 6, "date": "Feb 15", "is_player": false},
-		{"rank": 7, "name": "YOU", "value": 0, "date": "Today", "is_player": true},
-		{"rank": 8, "name": "Digger42", "value": 5, "date": "Feb 10", "is_player": false},
-		{"rank": 9, "name": "StoneBreaker", "value": 4, "date": "Feb 5", "is_player": false},
-	],
-	LeaderboardType.TIME:
-	[
-		{"rank": 1, "name": "MiningKing", "value": 245, "date": "Mar 1", "is_player": false},
-		{"rank": 2, "name": "RockLover", "value": 198, "date": "Feb 28", "is_player": false},
-		{"rank": 3, "name": "OreHunter", "value": 176, "date": "Feb 25", "is_player": false},
-		{"rank": 5, "name": "CaveExplorer", "value": 142, "date": "Feb 20", "is_player": false},
-		{"rank": 6, "name": "PickaxePro", "value": 128, "date": "Feb 15", "is_player": false},
-		{"rank": 7, "name": "YOU", "value": 0, "date": "Today", "is_player": true},
-		{"rank": 8, "name": "Digger42", "value": 115, "date": "Feb 10", "is_player": false},
-		{"rank": 9, "name": "StoneBreaker", "value": 102, "date": "Feb 5", "is_player": false},
-	],
+# Board IDs for each leaderboard type (replace placeholders with actual LEADR board IDs)
+const BOARD_IDS: Dictionary = {
+	LeaderboardType.SCORE: "brd_a313d59c-1fee-487a-98d8-e5f77b466f46",
+	LeaderboardType.ORE: "brd_582a7a2f-0b5b-48ad-be71-f891b1d4ea3e",
+	LeaderboardType.XP: "brd_8fd74728-46e4-4704-8a16-4ac046f48fe5",
+	LeaderboardType.KILLS: "brd_26fd4784-72cc-42b1-bf7d-bbcbad390d27",
+	LeaderboardType.TIME: "brd_c521d944-fd29-4cf9-b427-cc7a684bbaa3",
+	LeaderboardType.AT_TIME: "brd_e4850af6-48da-45c4-9d89-926eb8f0c5d5",
+	LeaderboardType.AT_XP: "brd_03e03437-8504-433f-8468-aac2da912b32",
+	LeaderboardType.FASTEST_DEATH: "brd_ea7c8167-c1d6-442e-85db-376ec959bf5f",
+	LeaderboardType.DPS: "brd_ba478d51-c618-4203-a9ce-42232cabe036",
 }
 
+var _cached_data: Dictionary = {}  # {LeaderboardType: Array of entries}
+var _is_loading: bool = false
 var _current_tab: LeaderboardType = LeaderboardType.SCORE
 var _leaderboard_rows: Array[HBoxContainer] = []
 var _tab_style_inactive: StyleBoxTexture
@@ -152,8 +106,6 @@ func _update_tab_styles() -> void:
 
 
 func _populate_leaderboard() -> void:
-	var entries: Array = _leaderboard_data[_current_tab]
-
 	match _current_tab:
 		LeaderboardType.SCORE:
 			_value_header.text = "Score"
@@ -165,8 +117,146 @@ func _populate_leaderboard() -> void:
 			_value_header.text = "Kills"
 		LeaderboardType.TIME:
 			_value_header.text = "Time"
+		LeaderboardType.AT_TIME:
+			_value_header.text = "Play Time (All-Time)"
+		LeaderboardType.AT_XP:
+			_value_header.text = "XP (All-Time)"
+		LeaderboardType.FASTEST_DEATH:
+			_value_header.text = "Fastest Death"
+		LeaderboardType.DPS:
+			_value_header.text = "DPS"
 
+	if _cached_data.has(_current_tab):
+		_display_entries(_cached_data[_current_tab])
+	else:
+		_show_loading_state()
+		_fetch_leaderboard_data(_current_tab)
+
+
+func _show_loading_state() -> void:
+	for row in _leaderboard_rows:
+		var rank_label := row.get_node("Rank") as Label
+		var name_label := row.get_node("Name") as Label
+		var value_label := row.get_node("Value") as Label
+		var date_label := row.get_node("Date") as Label
+		rank_label.text = "-"
+		name_label.text = "Loading..."
+		name_label.remove_theme_color_override("font_color")
+		value_label.text = "-"
+		date_label.text = "-"
+
+
+func _show_error_state(message: String) -> void:
 	for i in range(_leaderboard_rows.size()):
+		var row := _leaderboard_rows[i]
+		var rank_label := row.get_node("Rank") as Label
+		var name_label := row.get_node("Name") as Label
+		var value_label := row.get_node("Value") as Label
+		var date_label := row.get_node("Date") as Label
+		rank_label.text = "-"
+		name_label.text = message if i == 0 else ""
+		name_label.remove_theme_color_override("font_color")
+		value_label.text = ""
+		date_label.text = ""
+
+
+func _fetch_leaderboard_data(board_type: LeaderboardType) -> void:
+	_is_loading = true
+	var board_id: String = BOARD_IDS[board_type]
+	var player_score_id: String = Stats.get_submitted_score_id(board_type)
+
+	# Fetch top 3 scores
+	var top_result: LeadrResult = await Leadr.get_scores(board_id, 3)
+	var top_scores: Array = []
+	if top_result.is_success:
+		var page: LeadrPagedResult = top_result.data
+		top_scores = page.items
+	else:
+		push_warning("Failed to fetch top scores: %s" % top_result.error.message)
+		_show_error_state("Failed to load")
+		_is_loading = false
+		return
+
+	# Fetch "around me" scores (5 scores centered on player)
+	var around_scores: Array = []
+	if not player_score_id.is_empty():
+		var around_result: LeadrResult = await Leadr.get_scores(board_id, 5, "", player_score_id)
+		if around_result.is_success:
+			var page: LeadrPagedResult = around_result.data
+			around_scores = page.items
+		else:
+			push_warning("Failed to fetch around scores: %s" % around_result.error.message)
+	else:
+		# No player score - fetch more top scores to fill around section
+		var more_result: LeadrResult = await Leadr.get_scores(board_id, 8)
+		if more_result.is_success:
+			var all_scores: Array = more_result.data.items
+			for i in range(3, mini(8, all_scores.size())):
+				around_scores.append(all_scores[i])
+
+	# Build combined entry list
+	var entries: Array = _build_display_entries(top_scores, around_scores, player_score_id)
+
+	# Cache and display
+	_cached_data[board_type] = entries
+	_is_loading = false
+
+	# Only display if this tab is still selected
+	if board_type == _current_tab:
+		_display_entries(entries)
+
+
+func _build_display_entries(
+	top_scores: Array, around_scores: Array, player_score_id: String
+) -> Array:
+	var entries: Array = []
+	var latest_rank := 0
+
+	# Add top 3
+	for i in range(3):
+		if i < top_scores.size():
+			var score: LeadrScore = top_scores[i]
+			entries.append(_score_to_entry(score, score.id == player_score_id))
+			latest_rank = score.rank
+		else:
+			entries.append(_empty_entry())
+
+	# Add around me (5 entries)
+	for i in range(5):
+		if i < around_scores.size() and around_scores[i].rank > latest_rank:
+			var score: LeadrScore = around_scores[i]
+			entries.append(_score_to_entry(score, score.id == player_score_id))
+		else:
+			entries.append(_empty_entry())
+
+	return entries
+
+
+func _score_to_entry(score: LeadrScore, is_player: bool) -> Dictionary:
+	return {
+		"rank": score.rank,
+		"name": score.player_name,
+		"value": score.get_display_value(),
+		"date": score.get_relative_time(),
+		"is_player": is_player,
+	}
+
+
+func _empty_entry() -> Dictionary:
+	return {
+		"rank": 0,
+		"name": "-",
+		"value": "-",
+		"date": "-",
+		"is_player": false,
+	}
+
+
+func _display_entries(entries: Array) -> void:
+	for i in range(_leaderboard_rows.size()):
+		if i >= entries.size():
+			break
+
 		var row := _leaderboard_rows[i]
 		var entry: Dictionary = entries[i]
 
@@ -175,20 +265,14 @@ func _populate_leaderboard() -> void:
 		var value_label := row.get_node("Value") as Label
 		var date_label := row.get_node("Date") as Label
 
-		rank_label.text = str(entry["rank"])
-		if entry["is_player"] and Stats.player_display_name != "":
-			name_label.text = Stats.player_display_name
+		if entry["rank"] > 0:
+			rank_label.text = str(entry["rank"])
 		else:
-			name_label.text = entry["name"]
-		date_label.text = entry["date"]
+			rank_label.text = "-"
 
-		var value: float = entry["value"]
-		if _current_tab == LeaderboardType.TIME:
-			value_label.text = "%ds" % int(value)
-		elif _current_tab == LeaderboardType.SCORE:
-			value_label.text = _format_number(int(value))
-		else:
-			value_label.text = str(int(value))
+		name_label.text = entry["name"]
+		value_label.text = str(entry["value"])
+		date_label.text = entry["date"]
 
 		if entry["is_player"]:
 			name_label.add_theme_color_override("font_color", Color(0.6, 0.2, 0.1, 1))

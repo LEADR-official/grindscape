@@ -1,7 +1,7 @@
 extends CanvasLayer
 ## Game over screen — displays final stats and handles restart.
 
-const PLAYER_RANK := 7
+var _current_score_str: String = ""
 
 @onready var _score_label: RichTextLabel = %ScoreLabel
 @onready var _ore_label: Label = %OreLabel
@@ -47,15 +47,20 @@ func _ordinal(n: int) -> String:
 			return "%dth" % n
 
 
-func show_game_over() -> void:
+func show_game_over(predicted_rank: int = -1) -> void:
 	var score := Stats.get_score()
-	var score_str := _format_number(int(score))
-	var rank_str := _ordinal(PLAYER_RANK)
+	_current_score_str = _format_number(int(score))
 
-	_score_label.text = (
-		"[center]You scored [color=#1020FE]%s[/color] and ranked [color=#1020FE]%s[/color]![/center]"
-		% [score_str, rank_str]
-	)
+	if predicted_rank > 0:
+		var rank_str := _ordinal(predicted_rank)
+		_score_label.text = (
+			"[center]You scored [color=#1020FE]%s[/color] and ranked [color=#1020FE]%s[/color]![/center]"
+			% [_current_score_str, rank_str]
+		)
+	else:
+		_score_label.text = (
+			"[center]You scored [color=#1020FE]%s[/color]![/center]" % [_current_score_str]
+		)
 
 	_ore_label.text = "Ore: %d" % Stats.ore_count
 	_xp_label.text = "XP: %.0f" % Stats.xp

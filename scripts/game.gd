@@ -72,13 +72,103 @@ func _process(delta: float) -> void:
 	Stats.add_survival_time(delta)
 
 
+func _format_number(n: int) -> String:
+	var s := str(n)
+	var result := ""
+	var count := 0
+	for i in range(s.length() - 1, -1, -1):
+		if count > 0 and count % 3 == 0:
+			result = "," + result
+		result = s[i] + result
+		count += 1
+	return result
+
+
 func _on_player_died() -> void:
 	get_tree().paused = true
 	_game_die_sfx.play()
-	_game_over_screen.show_game_over()
 
-	var high_scores_board_id: String = "brd_a313d59c-1fee-487a-98d8-e5f77b466f46"
-	var score: float = Stats.get_score()
 	var display_name: String = Stats.player_display_name
 
-	await Leadr.submit_score(high_scores_board_id, score, display_name)
+	# Board configs: [board_type, board_id, value, value_display]
+	var boards: Array = [
+		{
+			"type": 0,  # SCORE
+			"board_id": "brd_a313d59c-1fee-487a-98d8-e5f77b466f46",
+			"value": Stats.get_score(),
+			"value_display": _format_number(int(Stats.get_score())),
+		},
+		{
+			"type": 1,  # ORE
+			"board_id": "brd_582a7a2f-0b5b-48ad-be71-f891b1d4ea3e",
+			"value": float(Stats.ore_count),
+			"value_display": _format_number(Stats.ore_count),
+		},
+		{
+			"type": 2,  # XP
+			"board_id": "brd_8fd74728-46e4-4704-8a16-4ac046f48fe5",
+			"value": Stats.xp,
+			"value_display": _format_number(int(Stats.xp)),
+		},
+		{
+			"type": 3,  # KILLS
+			"board_id": "brd_26fd4784-72cc-42b1-bf7d-bbcbad390d27",
+			"value": float(Stats.skeleton_kills),
+			"value_display": _format_number(Stats.skeleton_kills),
+		},
+		{
+			"type": 4,  # TIME
+			"board_id": "brd_c521d944-fd29-4cf9-b427-cc7a684bbaa3",
+			"value": Stats.survival_time_seconds,
+			"value_display":
+			(
+				"%d:%02d"
+				% [int(Stats.survival_time_seconds) / 60, int(Stats.survival_time_seconds) % 60]
+			),
+		},
+		{
+			"type": 5,  # ALL-TIME PLAY TIME
+			"board_id": "brd_e4850af6-48da-45c4-9d89-926eb8f0c5d5",
+			"value": Stats.survival_time_seconds,
+		},
+		{
+			"type": 6,  # ALL-TIME XP
+			"board_id": "brd_03e03437-8504-433f-8468-aac2da912b32",
+			"value": Stats.xp,
+		},
+		{
+			"type": 7,  # FASTEST DEATH
+			"board_id": "brd_ea7c8167-c1d6-442e-85db-376ec959bf5f",
+			"value": Stats.survival_time_seconds,
+			"value_display":
+			(
+				"%d:%02d"
+				% [int(Stats.survival_time_seconds) / 60, int(Stats.survival_time_seconds) % 60]
+			),
+		},
+		{
+			"type": 8,  # DPS
+			"board_id": "brd_ba478d51-c618-4203-a9ce-42232cabe036",
+			"value": Stats.get_dps(),
+		},
+	]
+
+	# Fetch predicted rank for SCORE board before submission
+	var score_board: Dictionary = boards[0]
+	var predicted_rank: int = -1
+	var predict_result: LeadrResult = await Leadr.get_scores(
+		score_board["board_id"], 1, "", "", score_board["value"]
+	)
+	if predict_result.is_success:
+		var page: LeadrPagedResult = predict_result.data
+		if not page.is_empty():
+			var placeholder_score: LeadrScore = page.first()
+			predicted_rank = placeholder_score.rank
+	else:
+		push_warning("Failed to fetch predicted rank: %s" % predict_result.error.message)
+
+	# Show game over with predicted rank
+	_game_over_screen.show_game_over(predicted_rank)
+
+	# Hand off to persistent Stats autoload so submission survives scene change
+	Stats.submit_scores_in_background(boards, display_name)

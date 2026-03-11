@@ -2,7 +2,7 @@ extends CanvasLayer
 ## HUD — displays live ore, XP, and health counters.
 
 const COLOR_HEALTHY := Color(0.459, 0.984, 0.298, 1)  # Neon green
-const COLOR_LOW_HP := Color(0.984, 0.0, 0.035, 1)     # Bright red
+const COLOR_LOW_HP := Color(0.984, 0.0, 0.035, 1)  # Bright red
 const LOW_HP_THRESHOLD := 3
 
 @onready var _ore_label: Label = $TopBar/OreLabel
