@@ -5,6 +5,7 @@ repos:
       - id: gdformat
         name: gdformat
         description: "Format GDScript files"
+        exclude: 'addons'
 
       - id: gdlint
         name: gdlint
