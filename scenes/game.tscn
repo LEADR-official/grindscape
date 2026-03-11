@@ -1,13 +1,24 @@
-[gd_scene load_steps=9 format=4 uid="uid://d3wxlp4b8fyjn"]
+[gd_scene load_steps=11 format=4 uid="uid://d3wxlp4b8fyjn"]
 
 [ext_resource type="PackedScene" uid="uid://dpt1j22nxfw0x" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://c8xts8sh4mtg2" path="res://scenes/rock.tscn" id="2_rock"]
 [ext_resource type="TileSet" uid="uid://ddioyprk5iddw" path="res://assets/tilesets/terrain.tres" id="2_u5sy4"]
-[ext_resource type="Script" uid="uid://b1578tt5yug3l" path="res://scripts/game.gd" id="3_game_script"]
+[ext_resource type="Script" uid="uid://jeki4rqohakj" path="res://scripts/game.gd" id="3_game_script"]
 [ext_resource type="PackedScene" uid="uid://c2venttcsvc04" path="res://scenes/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" uid="uid://8yjed6pnnyv6" path="res://scenes/skeleton.tscn" id="5_skeleton"]
 [ext_resource type="PackedScene" uid="uid://bo7thar1fkyio" path="res://scenes/game_over.tscn" id="6_game_over"]
 [ext_resource type="AudioStream" uid="uid://bwabbwu32jcvx" path="res://assets/audio/sfx/game-die.mp3" id="8_game_die"]
+[ext_resource type="Shader" uid="uid://dak0obmevr36n" path="res://shaders/runescape_palette.gdshader" id="9_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
+shader = ExtResource("9_shader")
+shader_parameter/gamma = 1.037
+shader_parameter/contrast = 1.2
+shader_parameter/brightness = -0.045
+shader_parameter/saturation = 1.12
+shader_parameter/color_levels = 14.484
+shader_parameter/pixel_size = 2.6
+shader_parameter/color_bias = Vector3(1.03, 1.07, 0.95)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("3_game_script")
@@ -41,3 +52,15 @@ visible = false
 [node name="GameDieSFX" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("8_game_die")
+
+[node name="PostProcessing" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Effect" type="ColorRect" parent="PostProcessing"]
+material = SubResource("ShaderMaterial_1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
