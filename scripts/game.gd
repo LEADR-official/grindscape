@@ -123,7 +123,7 @@ func _on_player_died() -> void:
 			"value_display":
 			(
 				"%d:%02d"
-				% [int(Stats.survival_time_seconds) / 60, int(Stats.survival_time_seconds) % 60]
+				% [int(Stats.survival_time_seconds) / 60.0, int(Stats.survival_time_seconds) % 60]
 			),
 		},
 		{
@@ -143,7 +143,7 @@ func _on_player_died() -> void:
 			"value_display":
 			(
 				"%d:%02d"
-				% [int(Stats.survival_time_seconds) / 60, int(Stats.survival_time_seconds) % 60]
+				% [int(Stats.survival_time_seconds) / 60.0, int(Stats.survival_time_seconds) % 60]
 			),
 		},
 		{

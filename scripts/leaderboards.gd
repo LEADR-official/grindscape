@@ -24,7 +24,6 @@ var _tab_style_inactive: StyleBoxTexture
 var _tab_style_active: StyleBoxTexture
 
 @onready var _value_header: Label = %ValueHeader
-@onready var _leaderboard_vbox: VBoxContainer = %LeaderboardVBox
 @onready var _loading_label: Label = %LoadingLabel
 @onready var _rows_container: VBoxContainer = %RowsContainer
 @onready var _back_button: Button = %BackButton
@@ -235,7 +234,7 @@ func _score_to_entry(
 ) -> Dictionary:
 	var value: String
 	if board_type == LeaderboardType.AT_TIME:
-		value = "%d:%02d" % [int(score.value) / 60, int(score.value) % 60]
+		value = "%d:%02d" % [int(score.value) / 60.0, int(score.value) % 60]
 	else:
 		value = score.get_display_value()
 	return {
