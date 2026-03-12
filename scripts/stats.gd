@@ -31,7 +31,7 @@ func get_damage_ratio() -> float:
 func get_dps() -> float:
 	if survival_time_seconds <= 0.0:
 		return 0.0
-	return (float(damage_dealt) / survival_time_seconds) or 0.0
+	return float(damage_dealt) / survival_time_seconds
 
 
 func get_kills_per_minute() -> float:
@@ -53,7 +53,7 @@ func get_ore_per_minute() -> float:
 
 
 func get_score() -> float:
-	return xp * sqrt(survival_time_seconds)
+	return xp * log(1.0 + survival_time_seconds / 60.0)
 
 
 # --- Mutation methods ---
